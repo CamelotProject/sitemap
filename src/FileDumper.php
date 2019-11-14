@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator;
+namespace Camelot\Sitemap;
 
 /**
  * Dumps content into a file.

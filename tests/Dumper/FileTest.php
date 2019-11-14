@@ -1,8 +1,8 @@
 <?php
 
-namespace SitemapGenerator\Tests\Dumper;
+namespace Camelot\Sitemap\Tests\Dumper;
 
-use SitemapGenerator\Dumper\File;
+use Camelot\Sitemap\Dumper\File;
 
 class FileTest extends FileTestCase
 {

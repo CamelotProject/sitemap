@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator;
+namespace Camelot\Sitemap;
 
+use Camelot\Sitemap\Entity\SitemapIndexEntry;
 use iter;
-use SitemapGenerator\Entity\SitemapIndexEntry;
 
 /**
  * Sitemap index generator.

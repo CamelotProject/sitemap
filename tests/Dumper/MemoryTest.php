@@ -1,9 +1,9 @@
 <?php
 
-namespace SitemapGenerator\Tests\Dumper;
+namespace Camelot\Sitemap\Tests\Dumper;
 
+use Camelot\Sitemap\Dumper\Memory;
 use PHPUnit\Framework\TestCase;
-use SitemapGenerator\Dumper\Memory;
 
 class MemoryTest extends TestCase
 {

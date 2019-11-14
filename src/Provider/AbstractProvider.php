@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator\Provider;
+namespace Camelot\Sitemap\Provider;
 
+use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\UrlGenerator;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use SitemapGenerator\Entity\Url;
-use SitemapGenerator\UrlGenerator;
 
 /**
  * Abstract class containing common methods used by Propel and Doctrine providers.

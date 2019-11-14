@@ -1,15 +1,15 @@
 <?php
 
-namespace SitemapGenerator\Tests;
+namespace Camelot\Sitemap\Tests;
 
+use Camelot\Sitemap\Dumper;
+use Camelot\Sitemap\Entity\ChangeFrequency;
+use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Formatter;
+use Camelot\Sitemap\Provider\DefaultValues;
+use Camelot\Sitemap\Sitemap;
+use Camelot\Sitemap\SitemapFormatter;
 use PHPUnit\Framework\TestCase;
-use SitemapGenerator\Dumper;
-use SitemapGenerator\Entity\ChangeFrequency;
-use SitemapGenerator\Entity\Url;
-use SitemapGenerator\Formatter;
-use SitemapGenerator\Provider\DefaultValues;
-use SitemapGenerator\Sitemap;
-use SitemapGenerator\SitemapFormatter;
 
 class SitemapTest extends TestCase
 {

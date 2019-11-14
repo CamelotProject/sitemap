@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator\Formatter;
+namespace Camelot\Sitemap\Formatter;
 
-use SitemapGenerator\Entity;
-use SitemapGenerator\SitemapIndexFormatter;
+use Camelot\Sitemap\Entity;
+use Camelot\Sitemap\SitemapIndexFormatter;
 
 class Xml implements SitemapIndexFormatter
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace SitemapGenerator\Tests\Entity;
+namespace Camelot\Sitemap\Tests\Entity;
 
+use Camelot\Sitemap\Entity\Video;
 use PHPUnit\Framework\TestCase;
-use SitemapGenerator\Entity\Video;
 
 class VideoTest extends TestCase
 {

@@ -47,9 +47,9 @@ Here is how you prepare the generator for a sitemap index:
 ```php
 <?php
 
-use SitemapGenerator\Dumper;
-use SitemapGenerator\Formatter;
-use SitemapGenerator\SitemapIndex;
+use Camelot\Sitemap\Dumper;
+use Camelot\Sitemap\Formatter;
+use Camelot\Sitemap\SitemapIndex;
 
 $dumper = new Dumper\File('sitemap-index.xml');
 $formatter = new Formatter\RichXml();

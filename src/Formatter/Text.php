@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator\Formatter;
+namespace Camelot\Sitemap\Formatter;
 
-use SitemapGenerator\Entity\Url;
-use SitemapGenerator\SitemapFormatter;
+use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\SitemapFormatter;
 
 /**
  * Sitemaps formatted using this class will contain only one URL per line and

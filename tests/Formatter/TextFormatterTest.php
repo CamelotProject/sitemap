@@ -1,10 +1,10 @@
 <?php
 
-namespace SitemapGenerator\Tests\Formatter;
+namespace Camelot\Sitemap\Tests\Formatter;
 
+use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Formatter;
 use PHPUnit\Framework\TestCase;
-use SitemapGenerator\Entity\Url;
-use SitemapGenerator\Formatter;
 
 class TextFormatterTest extends TestCase
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator\Dumper;
+namespace Camelot\Sitemap\Dumper;
 
-use SitemapGenerator\FileDumper;
+use Camelot\Sitemap\FileDumper;
 
 /**
  * Dump the sitemap into a compressed file.

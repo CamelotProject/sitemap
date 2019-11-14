@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator\Provider;
+namespace Camelot\Sitemap\Provider;
 
-use SitemapGenerator\Entity;
-use SitemapGenerator\UrlGenerator;
+use Camelot\Sitemap\Entity;
+use Camelot\Sitemap\UrlGenerator;
 
 final class Route implements \IteratorAggregate
 {

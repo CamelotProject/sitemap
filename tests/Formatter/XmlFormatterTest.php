@@ -1,14 +1,14 @@
 <?php
 
-namespace SitemapGenerator\Tests\Formatter;
+namespace Camelot\Sitemap\Tests\Formatter;
 
+use Camelot\Sitemap\Entity\ChangeFrequency;
+use Camelot\Sitemap\Entity\Image;
+use Camelot\Sitemap\Entity\SitemapIndexEntry;
+use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Entity\Video;
+use Camelot\Sitemap\Formatter;
 use PHPUnit\Framework\TestCase;
-use SitemapGenerator\Entity\ChangeFrequency;
-use SitemapGenerator\Entity\Image;
-use SitemapGenerator\Entity\Url;
-use SitemapGenerator\Entity\Video;
-use SitemapGenerator\Entity\SitemapIndexEntry;
-use SitemapGenerator\Formatter;
 
 class TestableXml extends Formatter\Xml
 {

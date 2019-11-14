@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator\Routing;
+namespace Camelot\Sitemap\Routing;
 
+use Camelot\Sitemap\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as SymfonyUrlGeneratorInterface;
-use SitemapGenerator\UrlGenerator;
 
 final class SymfonyUrlGenerator implements UrlGenerator
 {

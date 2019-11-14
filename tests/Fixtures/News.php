@@ -1,6 +1,6 @@
 <?php
 
-namespace SitemapGenerator\Tests\Fixtures;
+namespace Camelot\Sitemap\Tests\Fixtures;
 
 class News
 {

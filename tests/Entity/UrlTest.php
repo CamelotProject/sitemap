@@ -1,12 +1,12 @@
 <?php
 
-namespace SitemapGenerator\Tests\Entity;
+namespace Camelot\Sitemap\Tests\Entity;
 
+use Camelot\Sitemap\Entity\ChangeFrequency;
+use Camelot\Sitemap\Entity\Image;
+use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Entity\Video;
 use PHPUnit\Framework\TestCase;
-use SitemapGenerator\Entity\ChangeFrequency;
-use SitemapGenerator\Entity\Image;
-use SitemapGenerator\Entity\Url;
-use SitemapGenerator\Entity\Video;
 
 class UrlTest extends TestCase
 {

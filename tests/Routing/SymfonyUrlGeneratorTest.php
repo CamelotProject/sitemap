@@ -1,9 +1,9 @@
 <?php
 
-namespace SitemapGenerator\Tests\Routing;
+namespace Camelot\Sitemap\Tests\Routing;
 
+use Camelot\Sitemap\Routing\SymfonyUrlGenerator;
 use PHPUnit\Framework\TestCase;
-use SitemapGenerator\Routing\SymfonyUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SymfonyUrlGeneratorTest extends TestCase

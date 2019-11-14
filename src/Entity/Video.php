@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator\Entity;
+namespace Camelot\Sitemap\Entity;
 
 /**
  * Represents a video in a sitemap entry.

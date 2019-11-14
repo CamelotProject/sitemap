@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator\Dumper;
+namespace Camelot\Sitemap\Dumper;
 
-use SitemapGenerator\Dumper;
+use Camelot\Sitemap\Dumper;
 
 /**
  * Dump a sitemap in memory. Useful if you don't want to touch your filesystem

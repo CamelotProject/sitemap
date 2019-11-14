@@ -1,13 +1,13 @@
 <?php
 
-namespace SitemapGenerator\Tests\Formatter;
+namespace Camelot\Sitemap\Tests\Formatter;
 
+use Camelot\Sitemap\Entity\SitemapIndexEntry;
+use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Formatter\Spaceless as SpacelessFormatter;
+use Camelot\Sitemap\SitemapFormatter;
+use Camelot\Sitemap\SitemapIndexFormatter;
 use PHPUnit\Framework\TestCase;
-use SitemapGenerator\Entity\Url;
-use SitemapGenerator\Entity\SitemapIndexEntry;
-use SitemapGenerator\Formatter\Spaceless as SpacelessFormatter;
-use SitemapGenerator\SitemapFormatter;
-use SitemapGenerator\SitemapIndexFormatter;
 
 class TestableSitemapFormatter implements SitemapFormatter
 {

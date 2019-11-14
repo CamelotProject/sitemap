@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator\Formatter;
+namespace Camelot\Sitemap\Formatter;
 
-use SitemapGenerator\Entity\RichUrl;
-use SitemapGenerator\Entity\Url;
+use Camelot\Sitemap\Entity\RichUrl;
+use Camelot\Sitemap\Entity\Url;
 
 final class RichXml extends Xml
 {

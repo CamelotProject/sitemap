@@ -1,12 +1,12 @@
 <?php
 
-namespace SitemapGenerator\Tests\Provider;
+namespace Camelot\Sitemap\Tests\Provider;
 
+use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Provider\Route as RouteProvider;
+use Camelot\Sitemap\Tests\Fixtures\News;
+use Camelot\Sitemap\UrlGenerator;
 use PHPUnit\Framework\TestCase;
-use SitemapGenerator\Entity\Url;
-use SitemapGenerator\Provider\Route as RouteProvider;
-use SitemapGenerator\Tests\Fixtures\News;
-use SitemapGenerator\UrlGenerator;
 
 class RouteTest extends TestCase
 {

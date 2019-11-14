@@ -1,6 +1,6 @@
 <?php
 
-namespace SitemapGenerator\Tests\Dumper;
+namespace Camelot\Sitemap\Tests\Dumper;
 
 use PHPUnit\Framework\TestCase;
 

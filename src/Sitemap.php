@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator;
+namespace Camelot\Sitemap;
 
-use SitemapGenerator\Entity\Url;
-use SitemapGenerator\Provider\DefaultValues;
+use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Provider\DefaultValues;
 
 /**
  * Sitemap generator.

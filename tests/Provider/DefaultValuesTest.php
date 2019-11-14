@@ -1,10 +1,10 @@
 <?php
 
-namespace SitemapGenerator\Tests\Provider;
+namespace Camelot\Sitemap\Tests\Provider;
 
+use Camelot\Sitemap\Entity\ChangeFrequency;
+use Camelot\Sitemap\Provider\DefaultValues;
 use PHPUnit\Framework\TestCase;
-use SitemapGenerator\Entity\ChangeFrequency;
-use SitemapGenerator\Provider\DefaultValues;
 
 class DefaultValuesTest extends TestCase
 {

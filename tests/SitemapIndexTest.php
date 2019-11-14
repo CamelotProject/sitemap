@@ -1,12 +1,12 @@
 <?php
 
-namespace SitemapGenerator\Tests;
+namespace Camelot\Sitemap\Tests;
 
+use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\FileDumper;
+use Camelot\Sitemap\SitemapIndex;
+use Camelot\Sitemap\SitemapIndexFormatter;
 use PHPUnit\Framework\TestCase;
-use SitemapGenerator\Entity\Url;
-use SitemapGenerator\FileDumper;
-use SitemapGenerator\SitemapIndex;
-use SitemapGenerator\SitemapIndexFormatter;
 
 class SitemapIndexTest extends TestCase
 {

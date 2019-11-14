@@ -1,10 +1,10 @@
 <?php
 
-namespace SitemapGenerator\Tests\Formatter;
+namespace Camelot\Sitemap\Tests\Formatter;
 
-use SitemapGenerator\Entity\ChangeFrequency;
-use SitemapGenerator\Entity\RichUrl;
-use SitemapGenerator\Formatter;
+use Camelot\Sitemap\Entity\ChangeFrequency;
+use Camelot\Sitemap\Entity\RichUrl;
+use Camelot\Sitemap\Formatter;
 
 class RichXmlFormatterTest extends XmlFormatterTest
 {

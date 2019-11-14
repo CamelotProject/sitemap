@@ -7,9 +7,9 @@ Here is the minimal code required to get a working sitemap generator:
 ```php
 <?php
 
-use SitemapGenerator\Dumper;
-use SitemapGenerator\Formatter;
-use SitemapGenerator\Sitemap;
+use Camelot\Sitemap\Dumper;
+use Camelot\Sitemap\Formatter;
+use Camelot\Sitemap\Sitemap;
 
 $dumper = new Dumper\Memory();
 $formatter = new Formatter\Xml();
@@ -34,7 +34,7 @@ Exemple provider:
 ```php
 <?php
 
-use SitemapGenerator\Entity;
+use Camelot\Sitemap\Entity;
 
 class DummyProvider implements \IteratorAggregate
 {
@@ -98,10 +98,10 @@ filesystem.
 ```php
 <?php
 
-use SitemapGenerator\Dumper;
-use SitemapGenerator\Entity;
-use SitemapGenerator\Formatter;
-use SitemapGenerator\Sitemap;
+use Camelot\Sitemap\Dumper;
+use Camelot\Sitemap\Entity;
+use Camelot\Sitemap\Formatter;
+use Camelot\Sitemap\Sitemap;
 
 class DummyProvider implements \IteratorAggregate
 {

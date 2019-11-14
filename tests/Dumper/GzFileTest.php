@@ -1,8 +1,8 @@
 <?php
 
-namespace SitemapGenerator\Tests\Dumper;
+namespace Camelot\Sitemap\Tests\Dumper;
 
-use SitemapGenerator\Dumper\GzFile;
+use Camelot\Sitemap\Dumper\GzFile;
 
 class GzFileTest extends FileTestCase
 {

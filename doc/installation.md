@@ -3,7 +3,7 @@
 The recommended way to install SitemapGenerator is through composer.
 
 ```bash
-composer require kphoen/sitemap-generator
+composer require camelot/sitemap-generator
 ```
 
 Now you can add the autoloader, and you will have access to the library:

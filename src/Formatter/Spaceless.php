@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SitemapGenerator\Formatter;
+namespace Camelot\Sitemap\Formatter;
 
-use SitemapGenerator\Entity;
-use SitemapGenerator\SitemapFormatter;
-use SitemapGenerator\SitemapIndexFormatter;
+use Camelot\Sitemap\Entity;
+use Camelot\Sitemap\SitemapFormatter;
+use Camelot\Sitemap\SitemapIndexFormatter;
 
 final class Spaceless implements SitemapIndexFormatter
 {

@@ -1,5 +1,5 @@
 {
-    "name": "kphoen/sitemap-generator",
+    "name": "camelot/sitemap",
     "description": "Provides a way to create/generate a sitemap using Propel, Doctrine, etc.",
     "keywords": ["sitemap", "generator", "seo"],
     "type": "library",
@@ -9,24 +9,32 @@
             "name": "Kévin Gomez",
             "email": "contact@kevingomez.fr",
             "homepage": "http://www.kevingomez.fr/"
+        },
+        {
+            "name": "Gawain Lynch",
+            "email": "gawain.lynch@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
-        "php": "~7.1",
-        "symfony/property-access": "^3.0|^4.0|^5.0",
+        "php": "^7.1",
+        "symfony/property-access": "^4.3 || ^5.0",
         "nikic/iter": "^1.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.5",
-        "symfony/routing": "^3.0|^4.0|^5.0",
-        "friendsofphp/php-cs-fixer": "^2.10",
-        "kphoen/rusty": "dev-master"
+        "camelot/coding-style": "^2.0",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "kphoen/rusty": "dev-master",
+        "phpunit/phpunit": "^8.4",
+        "symfony/phpunit-bridge": "^4.3 || ^5.0",
+        "symfony/routing": "^4.3 || ^5.0"
     },
     "autoload": {
-        "psr-4": { "SitemapGenerator\\": "src/" }
+        "psr-4": { "Camelot\\Sitemap\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "SitemapGenerator\\Tests\\": "tests/" }
+        "psr-4": { "Camelot\\Sitemap\\Tests\\": "tests/" }
     },
     "extra": {
         "branch-alias": {
