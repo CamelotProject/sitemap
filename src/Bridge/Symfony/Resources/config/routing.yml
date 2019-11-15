@@ -1,0 +1,4 @@
+camelot_sitemap_sitemap:
+    path: /sitemap.xml
+    defaults: { _controller: Camelot\Sitemap\Bridge\Symfony\Controller\SitemapController }
+    methods: [ GET ]

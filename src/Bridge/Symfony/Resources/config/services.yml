@@ -1,0 +1,29 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Camelot\Sitemap\Bridge\Symfony\Command\GenerateSitemapCommand:
+        arguments:
+            $sitemap: '@Camelot\Sitemap\Sitemap'
+        tags:
+            - { name: console.command }
+
+    Camelot\Sitemap\Bridge\Symfony\Controller\SitemapController:
+        public: true
+        tags: [ 'controller.service_arguments' ]
+
+    Camelot\Sitemap\Dumper\GzFile:
+        arguments: [ "%sitemap.config.file%" ]
+
+    Camelot\Sitemap\Dumper\FileDumperInterface: '@Camelot\Sitemap\Dumper\GzFile'
+
+    Camelot\Sitemap\Formatter\Xml:
+
+    Camelot\Sitemap\Formatter\FormatterInterface: '@Camelot\Sitemap\Formatter\Xml'
+
+    Camelot\Sitemap\Sitemap:
+        public: true
+        arguments:
+            $dumper: '@Camelot\Sitemap\Dumper\FileDumperInterface'
+            $formatter: '@Camelot\Sitemap\Formatter\FormatterInterface'
