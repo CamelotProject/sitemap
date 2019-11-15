@@ -1,8 +1,0 @@
-services:
-    KPhoen\SitemapBundle\Tests\Fixtures\Provider\TestProvider:
-        tags:
-            -  { name: sitemap.provider }
-
-    SitemapGenerator\Dumper\Memory:
-
-    SitemapGenerator\FileDumper: '@SitemapGenerator\Dumper\Memory'
