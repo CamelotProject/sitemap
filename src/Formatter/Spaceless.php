@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Camelot\Sitemap\Formatter;
 
 use Camelot\Sitemap\Entity;
-use Camelot\Sitemap\SitemapFormatter;
-use Camelot\Sitemap\SitemapIndexFormatter;
+use Camelot\Sitemap\FormatterInterface;
+use Camelot\Sitemap\IndexFormatterInterface;
 
-final class Spaceless implements SitemapIndexFormatter
+final class Spaceless implements IndexFormatterInterface
 {
     private $formatter;
 
-    public function __construct(SitemapFormatter $formatter)
+    public function __construct(FormatterInterface $formatter)
     {
         $this->formatter = $formatter;
     }
@@ -34,7 +34,7 @@ final class Spaceless implements SitemapIndexFormatter
 
     public function getSitemapIndexStart(): string
     {
-        if (!$this->formatter instanceof SitemapIndexFormatter) {
+        if (!$this->formatter instanceof IndexFormatterInterface) {
             return '';
         }
 
@@ -43,7 +43,7 @@ final class Spaceless implements SitemapIndexFormatter
 
     public function getSitemapIndexEnd(): string
     {
-        if (!$this->formatter instanceof SitemapIndexFormatter) {
+        if (!$this->formatter instanceof IndexFormatterInterface) {
             return '';
         }
 
@@ -52,7 +52,7 @@ final class Spaceless implements SitemapIndexFormatter
 
     public function formatSitemapIndex(Entity\SitemapIndexEntry $entry): string
     {
-        if (!$this->formatter instanceof SitemapIndexFormatter) {
+        if (!$this->formatter instanceof IndexFormatterInterface) {
             return '';
         }
 

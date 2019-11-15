@@ -5,7 +5,7 @@ namespace Camelot\Sitemap\Tests\Provider;
 use Camelot\Sitemap\Entity\Url;
 use Camelot\Sitemap\Provider\Route as RouteProvider;
 use Camelot\Sitemap\Tests\Fixtures\News;
-use Camelot\Sitemap\UrlGenerator;
+use Camelot\Sitemap\UrlGeneratorInterface;
 use PHPUnit\Framework\TestCase;
 
 class RouteTest extends TestCase
@@ -35,7 +35,7 @@ class RouteTest extends TestCase
 
     private function getRouter(array $results)
     {
-        $router = $this->createMock(UrlGenerator::class);
+        $router = $this->createMock(UrlGeneratorInterface::class);
 
         $valueMap = array_map(function(News $news) {
             return [

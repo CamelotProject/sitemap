@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Dumper;
 
-use Camelot\Sitemap\FileDumper;
+use Camelot\Sitemap\FileDumperInterface;
 
 /**
  * Dump the sitemap into a file.
  *
  * @see GzFile
  */
-class File implements FileDumper
+class File implements FileDumperInterface
 {
     private $filename;
     private $handle;
@@ -24,7 +24,7 @@ class File implements FileDumper
     /**
      * {@inheritdoc}
      */
-    public function changeFile(string $filename): FileDumper
+    public function changeFile(string $filename): FileDumperInterface
     {
         return new static($filename);
     }

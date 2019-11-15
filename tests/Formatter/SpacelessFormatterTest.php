@@ -5,11 +5,11 @@ namespace Camelot\Sitemap\Tests\Formatter;
 use Camelot\Sitemap\Entity\SitemapIndexEntry;
 use Camelot\Sitemap\Entity\Url;
 use Camelot\Sitemap\Formatter\Spaceless as SpacelessFormatter;
-use Camelot\Sitemap\SitemapFormatter;
-use Camelot\Sitemap\SitemapIndexFormatter;
+use Camelot\Sitemap\FormatterInterface;
+use Camelot\Sitemap\IndexFormatterInterface;
 use PHPUnit\Framework\TestCase;
 
-class TestableSitemapFormatter implements SitemapFormatter
+class TestableFormatter implements FormatterInterface
 {
     public function getSitemapStart(): string
     {
@@ -31,25 +31,25 @@ class SpacelessFormatterTest extends TestCase
 {
     public function testSitemapStart(): void
     {
-        $formatter = new SpacelessFormatter(new TestableSitemapFormatter());
+        $formatter = new SpacelessFormatter(new TestableFormatter());
         $this->assertSame('joe', $formatter->getSitemapStart());
     }
 
     public function testSitemapEnd(): void
     {
-        $formatter = new SpacelessFormatter(new TestableSitemapFormatter());
+        $formatter = new SpacelessFormatter(new TestableFormatter());
         $this->assertSame('foo', $formatter->getSitemapEnd());
     }
 
     public function testGetSitemapIndexStartWithSitemapFormatter(): void
     {
-        $formatter = new SpacelessFormatter(new TestableSitemapFormatter());
+        $formatter = new SpacelessFormatter(new TestableFormatter());
         $this->assertSame('', $formatter->getSitemapIndexStart());
     }
 
     public function testGetSitemapIndexStartWithSitemapIndexFormatter(): void
     {
-        $sitemapIndexFormatter = $this->createMock(SitemapIndexFormatter::class);
+        $sitemapIndexFormatter = $this->createMock(IndexFormatterInterface::class);
         $sitemapIndexFormatter
             ->expects($this->once())
             ->method('getSitemapIndexStart')
@@ -62,13 +62,13 @@ class SpacelessFormatterTest extends TestCase
 
     public function testGetSitemapIndexEndWithSitemapFormatter(): void
     {
-        $formatter = new SpacelessFormatter(new TestableSitemapFormatter());
+        $formatter = new SpacelessFormatter(new TestableFormatter());
         $this->assertSame('', $formatter->getSitemapIndexEnd());
     }
 
     public function testGetSitemapIndexEndWithSitemapIndexFormatter(): void
     {
-        $sitemapIndexFormatter = $this->createMock(SitemapIndexFormatter::class);
+        $sitemapIndexFormatter = $this->createMock(IndexFormatterInterface::class);
         $sitemapIndexFormatter
             ->expects($this->once())
             ->method('getSitemapIndexEnd')
@@ -81,7 +81,7 @@ class SpacelessFormatterTest extends TestCase
 
     public function testFormatSitemapIndexWithSitemapFormatter(): void
     {
-        $formatter = new SpacelessFormatter(new TestableSitemapFormatter());
+        $formatter = new SpacelessFormatter(new TestableFormatter());
         $entry = new SitemapIndexEntry('not relevant');
 
         $this->assertSame('', $formatter->formatSitemapIndex($entry));
@@ -91,7 +91,7 @@ class SpacelessFormatterTest extends TestCase
     {
         $entry = new SitemapIndexEntry('not relevant');
 
-        $sitemapIndexFormatter = $this->createMock(SitemapIndexFormatter::class);
+        $sitemapIndexFormatter = $this->createMock(IndexFormatterInterface::class);
         $sitemapIndexFormatter
             ->expects($this->once())
             ->method('formatSitemapIndex')
@@ -105,7 +105,7 @@ class SpacelessFormatterTest extends TestCase
 
     public function testFormatUrl(): void
     {
-        $formatter = new SpacelessFormatter(new TestableSitemapFormatter());
+        $formatter = new SpacelessFormatter(new TestableFormatter());
 
         $url = new Url('http://www.google.fr');
 

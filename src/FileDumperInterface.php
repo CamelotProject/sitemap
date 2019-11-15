@@ -7,7 +7,7 @@ namespace Camelot\Sitemap;
 /**
  * Dumps content into a file.
  */
-interface FileDumper extends Dumper
+interface FileDumperInterface extends DumperInterface
 {
     public function getFilename(): string;
 
@@ -17,5 +17,5 @@ interface FileDumper extends Dumper
      *
      * @param string $filename The new file to dump content to.
      */
-    public function changeFile(string $filename): FileDumper;
+    public function changeFile(string $filename): FileDumperInterface;
 }

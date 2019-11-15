@@ -3,9 +3,9 @@
 namespace Camelot\Sitemap\Tests;
 
 use Camelot\Sitemap\Entity\Url;
-use Camelot\Sitemap\FileDumper;
+use Camelot\Sitemap\FileDumperInterface;
 use Camelot\Sitemap\SitemapIndex;
-use Camelot\Sitemap\SitemapIndexFormatter;
+use Camelot\Sitemap\IndexFormatterInterface;
 use PHPUnit\Framework\TestCase;
 
 class SitemapIndexTest extends TestCase
@@ -44,11 +44,11 @@ class SitemapIndexTest extends TestCase
 
     private function getFileDumper()
     {
-        return $this->createMock(FileDumper::class);
+        return $this->createMock(FileDumperInterface::class);
     }
 
     private function getFormatter()
     {
-        return $this->createMock(SitemapIndexFormatter::class);
+        return $this->createMock(IndexFormatterInterface::class);
     }
 }

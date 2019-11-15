@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Dumper;
 
-use Camelot\Sitemap\FileDumper;
+use Camelot\Sitemap\FileDumperInterface;
 
 /**
  * Dump the sitemap into a compressed file.
@@ -21,7 +21,7 @@ final class GzFile extends File
     /**
      * {@inheritdoc}
      */
-    public function changeFile(string $filename): FileDumper
+    public function changeFile(string $filename): FileDumperInterface
     {
         return parent::changeFile(str_replace('compress.zlib://', '', $filename));
     }

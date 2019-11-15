@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Camelot\Sitemap\Formatter;
 
 use Camelot\Sitemap\Entity;
-use Camelot\Sitemap\SitemapIndexFormatter;
+use Camelot\Sitemap\IndexFormatterInterface;
 
-class Xml implements SitemapIndexFormatter
+class Xml implements IndexFormatterInterface
 {
     public function getSitemapStart(): string
     {

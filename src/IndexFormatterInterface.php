@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap;
 
-interface SitemapIndexFormatter extends SitemapFormatter
+interface IndexFormatterInterface extends FormatterInterface
 {
     public function getSitemapIndexStart(): string;
 

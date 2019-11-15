@@ -8,7 +8,7 @@ namespace Camelot\Sitemap;
  * The dumper takes care of the sitemap's persistence (file, compressed file,
  * memory).
  */
-interface Dumper
+interface DumperInterface
 {
     /**
      * Dump a string.

@@ -25,16 +25,16 @@ class Sitemap
     protected $providers;
 
     /**
-     * @var Dumper
+     * @var DumperInterface
      */
     private $dumper;
 
     /**
-     * @var SitemapFormatter
+     * @var FormatterInterface
      */
     private $formatter;
 
-    public function __construct(Dumper $dumper, SitemapFormatter $formatter)
+    public function __construct(DumperInterface $dumper, FormatterInterface $formatter)
     {
         $this->dumper = $dumper;
         $this->formatter = $formatter;

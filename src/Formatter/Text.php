@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Camelot\Sitemap\Formatter;
 
 use Camelot\Sitemap\Entity\Url;
-use Camelot\Sitemap\SitemapFormatter;
+use Camelot\Sitemap\FormatterInterface;
 
 /**
  * Sitemaps formatted using this class will contain only one URL per line and
@@ -13,7 +13,7 @@ use Camelot\Sitemap\SitemapFormatter;
  *
  * @see http://www.sitemaps.org/protocol.html#otherformats
  */
-final class Text implements SitemapFormatter
+final class Text implements FormatterInterface
 {
     public function getSitemapStart(): string
     {

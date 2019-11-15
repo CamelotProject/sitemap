@@ -3,12 +3,13 @@
 namespace Camelot\Sitemap\Tests;
 
 use Camelot\Sitemap\Dumper;
+use Camelot\Sitemap\DumperInterface;
 use Camelot\Sitemap\Entity\ChangeFrequency;
 use Camelot\Sitemap\Entity\Url;
 use Camelot\Sitemap\Formatter;
 use Camelot\Sitemap\Provider\DefaultValues;
 use Camelot\Sitemap\Sitemap;
-use Camelot\Sitemap\SitemapFormatter;
+use Camelot\Sitemap\FormatterInterface;
 use PHPUnit\Framework\TestCase;
 
 class SitemapTest extends TestCase
@@ -71,11 +72,11 @@ class SitemapTest extends TestCase
 
     private function getDumper()
     {
-        return $this->createMock(Dumper::class);
+        return $this->createMock(DumperInterface::class);
     }
 
     private function getFormatter()
     {
-        return $this->createMock(SitemapFormatter::class);
+        return $this->createMock(FormatterInterface::class);
     }
 }

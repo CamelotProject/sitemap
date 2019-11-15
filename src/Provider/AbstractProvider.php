@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Camelot\Sitemap\Provider;
 
 use Camelot\Sitemap\Entity\Url;
-use Camelot\Sitemap\UrlGenerator;
+use Camelot\Sitemap\UrlGeneratorInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
@@ -19,7 +19,7 @@ abstract class AbstractProvider
     private $accessor;
 
     /**
-     * @var UrlGenerator
+     * @var UrlGeneratorInterface
      */
     private $urlGenerator;
 
@@ -28,7 +28,7 @@ abstract class AbstractProvider
         'lastmod' => null,
     ];
 
-    public function __construct(UrlGenerator $urlGenerator, array $options)
+    public function __construct(UrlGeneratorInterface $urlGenerator, array $options)
     {
         $this->urlGenerator = $urlGenerator;
         $this->options = array_merge($this->options, $options);

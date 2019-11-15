@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap;
 
-interface UrlGenerator
+interface UrlGeneratorInterface
 {
     /**
      * Generates a URL or path for a specific route based on the given parameters.
