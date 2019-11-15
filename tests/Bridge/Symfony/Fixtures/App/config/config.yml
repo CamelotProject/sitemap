@@ -1,12 +1,11 @@
 imports:
-    - { resource: '../../../../../Resources/config/services.yml' }
     - { resource: services.yml }
 
 framework:
     test: true
     session: { storage_id: session.storage.mock_file }
     secret: Hell yeah!
-    router: { resource: "%kernel.project_dir%/Resources/config/routing.yml" }
+    router: { resource: "%kernel.project_dir%/src/Bridge/Symfony/Resources/config/routing.yml" }
 
-k_phoen_sitemap:
+camelot_sitemap:
     base_host: http://localhost

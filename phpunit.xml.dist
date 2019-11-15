@@ -10,6 +10,7 @@
         <server name="APP_ENV" value="test" force="true" />
         <server name="APP_ONLY_ALIASES" value="false" />
         <server name="SHELL_VERBOSITY" value="-1" />
+        <server name="KERNEL_CLASS" value="Camelot\Sitemap\Tests\Bridge\Symfony\Fixtures\App\TestKernel" />
     </php>
 
     <testsuites>

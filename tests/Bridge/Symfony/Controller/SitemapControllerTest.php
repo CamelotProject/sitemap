@@ -1,6 +1,6 @@
 <?php
 
-namespace Camelot\Sitemap\Bridge\Symfony\Tests\Controller;
+namespace Camelot\Sitemap\Tests\Bridge\Symfony\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

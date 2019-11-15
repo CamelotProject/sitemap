@@ -1,6 +1,6 @@
 <?php
 
-namespace Camelot\Sitemap\Bridge\Symfony\Tests\Fixtures\Provider;
+namespace Camelot\Sitemap\Tests\Bridge\Symfony\Fixtures\Provider;
 
 use Camelot\Sitemap\Entity\Url;
 use Camelot\Sitemap\Entity\Video;

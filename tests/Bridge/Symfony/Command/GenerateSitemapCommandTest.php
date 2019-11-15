@@ -1,14 +1,14 @@
 <?php
 
-namespace Camelot\Sitemap\Bridge\Symfony\Tests\Controller;
+namespace Camelot\Sitemap\Tests\Bridge\Symfony\Command;
 
+use Camelot\Sitemap\Bridge\Symfony\Command\GenerateSitemapCommand;
 use Camelot\Sitemap\Dumper\Memory;
 use Camelot\Sitemap\Formatter\Text;
 use Camelot\Sitemap\Sitemap;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Camelot\Sitemap\Bridge\Symfony\Command\GenerateSitemapCommand;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class GenerateSitemapCommandTest extends WebTestCase
 {

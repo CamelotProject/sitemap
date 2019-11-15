@@ -1,5 +1,5 @@
 services:
-    Camelot\Sitemap\Bridge\Symfony\Tests\Fixtures\Provider\TestProvider:
+    Camelot\Sitemap\Tests\Bridge\Symfony\Fixtures\Provider\TestProvider:
         tags:
             -  { name: sitemap.provider }
 
