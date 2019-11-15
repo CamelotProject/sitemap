@@ -4,9 +4,9 @@ namespace Camelot\Sitemap\Tests\Formatter;
 
 use Camelot\Sitemap\Entity\SitemapIndexEntry;
 use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Formatter\FormatterInterface;
+use Camelot\Sitemap\Formatter\IndexFormatterInterface;
 use Camelot\Sitemap\Formatter\Spaceless as SpacelessFormatter;
-use Camelot\Sitemap\FormatterInterface;
-use Camelot\Sitemap\IndexFormatterInterface;
 use PHPUnit\Framework\TestCase;
 
 class TestableFormatter implements FormatterInterface

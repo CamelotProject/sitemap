@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Camelot\Sitemap;
+namespace Camelot\Sitemap\Dumper;
 
 /**
  * The dumper takes care of the sitemap's persistence (file, compressed file,

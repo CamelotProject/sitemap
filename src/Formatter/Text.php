@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Camelot\Sitemap\Formatter;
 
 use Camelot\Sitemap\Entity\Url;
-use Camelot\Sitemap\FormatterInterface;
 
 /**
  * Sitemaps formatted using this class will contain only one URL per line and

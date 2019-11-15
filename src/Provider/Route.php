@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Camelot\Sitemap\Provider;
 
 use Camelot\Sitemap\Entity;
-use Camelot\Sitemap\UrlGeneratorInterface;
+use Camelot\Sitemap\Routing\UrlGeneratorInterface;
 
 final class Route implements \IteratorAggregate
 {
-    /** @var UrlGeneratorInterface */
+    /** @var \Camelot\Sitemap\Routing\UrlGeneratorInterface */
     private $urlGenerator;
 
     /** @var array */

@@ -2,10 +2,10 @@
 
 namespace Camelot\Sitemap\Tests;
 
+use Camelot\Sitemap\Dumper\FileDumperInterface;
 use Camelot\Sitemap\Entity\Url;
-use Camelot\Sitemap\FileDumperInterface;
+use Camelot\Sitemap\Formatter\IndexFormatterInterface;
 use Camelot\Sitemap\SitemapIndex;
-use Camelot\Sitemap\IndexFormatterInterface;
 use PHPUnit\Framework\TestCase;
 
 class SitemapIndexTest extends TestCase

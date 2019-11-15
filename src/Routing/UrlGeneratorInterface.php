@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Camelot\Sitemap;
+namespace Camelot\Sitemap\Routing;
 
 interface UrlGeneratorInterface
 {

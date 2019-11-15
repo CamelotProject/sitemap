@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Camelot\Sitemap;
+namespace Camelot\Sitemap\Formatter;
+
+use Camelot\Sitemap\Entity;
 
 interface FormatterInterface
 {

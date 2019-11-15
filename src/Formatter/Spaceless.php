@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Camelot\Sitemap\Formatter;
 
 use Camelot\Sitemap\Entity;
-use Camelot\Sitemap\FormatterInterface;
-use Camelot\Sitemap\IndexFormatterInterface;
 
 final class Spaceless implements IndexFormatterInterface
 {

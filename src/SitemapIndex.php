@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap;
 
+use Camelot\Sitemap\Dumper\FileDumperInterface;
 use Camelot\Sitemap\Entity\SitemapIndexEntry;
+use Camelot\Sitemap\Formatter\IndexFormatterInterface;
 use iter;
 
 /**

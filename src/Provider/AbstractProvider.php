@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Camelot\Sitemap\Provider;
 
 use Camelot\Sitemap\Entity\Url;
-use Camelot\Sitemap\UrlGeneratorInterface;
+use Camelot\Sitemap\Routing\UrlGeneratorInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
@@ -19,7 +19,7 @@ abstract class AbstractProvider
     private $accessor;
 
     /**
-     * @var UrlGeneratorInterface
+     * @var \Camelot\Sitemap\Routing\UrlGeneratorInterface
      */
     private $urlGenerator;
 

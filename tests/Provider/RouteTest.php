@@ -4,8 +4,8 @@ namespace Camelot\Sitemap\Tests\Provider;
 
 use Camelot\Sitemap\Entity\Url;
 use Camelot\Sitemap\Provider\Route as RouteProvider;
+use Camelot\Sitemap\Routing\UrlGeneratorInterface;
 use Camelot\Sitemap\Tests\Fixtures\News;
-use Camelot\Sitemap\UrlGeneratorInterface;
 use PHPUnit\Framework\TestCase;
 
 class RouteTest extends TestCase

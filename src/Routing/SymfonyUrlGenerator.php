@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Routing;
 
-use Camelot\Sitemap\UrlGeneratorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as SymfonyUrlGeneratorInterface;
 
 final class SymfonyUrlGenerator implements UrlGeneratorInterface
