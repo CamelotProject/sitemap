@@ -19,6 +19,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.1",
+        "camelot/thrower": "^1.0",
         "nikic/iter": "^2.0",
         "symfony/property-access": "^4.3 || ^5.0"
     },
