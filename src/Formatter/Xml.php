@@ -40,12 +40,12 @@ class Xml implements IndexFormatterInterface
     {
         $buffer = "\t" . '<loc>' . $this->escape($url->getLoc()) . '</loc>' . "\n";
 
-        if ($url->getLastmod() !== null) {
-            $buffer .= "\t" . '<lastmod>' . $this->escape($url->getLastmod()) . '</lastmod>' . "\n";
+        if ($url->getLastModified() !== null) {
+            $buffer .= "\t" . '<lastmod>' . $this->escape($url->getLastModified()) . '</lastmod>' . "\n";
         }
 
-        if ($url->getChangeFreq() !== null) {
-            $buffer .= "\t" . '<changefreq>' . $this->escape($url->getChangeFreq()) . '</changefreq>' . "\n";
+        if ($url->getChangeFrequency() !== null) {
+            $buffer .= "\t" . '<changefreq>' . $this->escape($url->getChangeFrequency()) . '</changefreq>' . "\n";
         }
 
         if ($url->getPriority() !== null) {
@@ -70,10 +70,10 @@ class Xml implements IndexFormatterInterface
 
     protected function formatSitemapIndexBody(Element\SitemapIndex $entry): string
     {
-        $buffer = "\t" . '<loc>' . $this->escape($entry->getLoc()) . '</loc>' . "\n";
+        $buffer = "\t" . '<loc>' . $this->escape($entry->getLocation()) . '</loc>' . "\n";
 
-        if ($entry->getLastmod() !== null) {
-            $buffer .= "\t" . '<lastmod>' . $this->escape($entry->getLastmod()) . '</lastmod>' . "\n";
+        if ($entry->getLastModified() !== null) {
+            $buffer .= "\t" . '<lastmod>' . $this->escape($entry->getLastModified()) . '</lastmod>' . "\n";
         }
 
         return $buffer;
@@ -119,7 +119,7 @@ class Xml implements IndexFormatterInterface
             $buffer .= "\t\t" . '<video:publication_date>' . $this->escape($video->getPublicationDate()) . '</video:publication_date>' . "\n";
         }
 
-        if ($video->getFamilyFriendly() === false) {
+        if ($video->isFamilyFriendly() === false) {
             $buffer .= "\t\t" . '<video:family_friendly>no</video:family_friendly>' . "\n";
         }
 
@@ -133,8 +133,8 @@ class Xml implements IndexFormatterInterface
             $buffer .= "\t\t" . '<video:category>' . $this->escape($video->getCategory()) . '</video:category>' . "\n";
         }
 
-        if ($video->getRestrictions() !== null) {
-            $restrictions = $video->getRestrictions();
+        if ($video->getRestriction() !== null) {
+            $restrictions = $video->getRestriction();
             $relationship = $this->escape($restrictions['relationship']);
 
             $buffer .= "\t\t" . '<video:restriction relationship="' . $relationship . '">' . $this->escape(implode(' ', $restrictions['countries'])) . '</video:restriction>' . "\n";
@@ -147,8 +147,8 @@ class Xml implements IndexFormatterInterface
             $buffer .= "\t\t" . sprintf('<video:gallery_loc%s>', $title) . $this->escape($galleryLoc['loc']) . '</video:gallery_loc>' . "\n";
         }
 
-        if ($video->getRequiresSubscription() !== null) {
-            $buffer .= "\t\t" . '<video:requires_subscription>' . ($video->getRequiresSubscription() ? 'yes' : 'no') . '</video:requires_subscription>' . "\n";
+        if ($video->isRequiresSubscription()) {
+            $buffer .= "\t\t" . '<video:requires_subscription>' . ($video->isRequiresSubscription() ? 'yes' : 'no') . '</video:requires_subscription>' . "\n";
         }
 
         if ($video->getUploader() !== null) {
@@ -158,14 +158,14 @@ class Xml implements IndexFormatterInterface
             $buffer .= "\t\t" . sprintf('<video:uploader%s>', $info) . $this->escape($uploader['name']) . '</video:uploader>' . "\n";
         }
 
-        if ($video->getPlatforms() !== null) {
-            foreach ($video->getPlatforms() as $platform => $relationship) {
+        if ($video->getPlatform() !== null) {
+            foreach ($video->getPlatform() as $platform => $relationship) {
                 $buffer .= "\t\t" . '<video:platform relationship="' . $this->escape($relationship) . '">' . $this->escape($platform) . '</video:platform>' . "\n";
             }
         }
 
-        if ($video->getLive() !== null) {
-            $buffer .= "\t\t" . '<video:live>' . ($video->getLive() ? 'yes' : 'no') . '</video:live>' . "\n";
+        if ($video->isLive() !== null) {
+            $buffer .= "\t\t" . '<video:live>' . ($video->isLive() ? 'yes' : 'no') . '</video:live>' . "\n";
         }
 
         return $buffer . "\t" . '</video:video>' . "\n";

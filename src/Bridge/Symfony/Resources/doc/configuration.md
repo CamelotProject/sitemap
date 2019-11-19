@@ -26,7 +26,7 @@ class DummyProvider implements ProviderInterface
         $url = new Url();
         $url->setLoc('http://www.google.fr');
         $url->setChangefreq(Url::CHANGEFREQ_NEVER);
-        $url->setLastmod('2012-12-19 02:28');
+        $url->setLastModified('2012-12-19 02:28');
         $sitemap->add($url);
     }
 }

@@ -53,7 +53,7 @@ class SitemapTest extends TestCase
             ->expects($this->once())
             ->method('formatUrl')
             ->with($this->callback(function(Url $url) {
-                return $url->getPriority() === 0.7 && $url->getChangeFreq() === ChangeFrequency::ALWAYS;
+                return $url->getPriority() === 0.7 && $url->getChangeFrequency() === ChangeFrequency::ALWAYS;
             }));
 
         $sitemap->addProvider(new \ArrayIterator([new Url('http://www.google.fr/search')]), $defaultValues);

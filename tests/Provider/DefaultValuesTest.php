@@ -16,9 +16,9 @@ class DefaultValuesTest extends TestCase
         $this->assertFalse($values->hasPriority());
         $this->assertFalse($values->hasChangeFreq());
 
-        $this->assertNull($values->getLastmod());
+        $this->assertNull($values->getLastModified());
         $this->assertNull($values->getPriority());
-        $this->assertNull($values->getChangeFreq());
+        $this->assertNull($values->getChangeFrequency());
     }
 
     public function testDefaultValuesCanBeGiven(): void
@@ -33,8 +33,8 @@ class DefaultValuesTest extends TestCase
         $this->assertTrue($values->hasPriority());
         $this->assertTrue($values->hasChangeFreq());
 
-        $this->assertSame($lastmod, $values->getLastmod());
+        $this->assertSame($lastmod, $values->getLastModified());
         $this->assertSame($priority, $values->getPriority());
-        $this->assertSame($changeFreq, $values->getChangeFreq());
+        $this->assertSame($changeFreq, $values->getChangeFrequency());
     }
 }

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Element\Child;
 
-/**
- * Represents a sitemap entry.
- *
- * @see http://www.sitemaps.org/protocol.html
- */
-class Url
+use Camelot\Sitemap\Util\Assert;
+use DateTimeInterface;
+
+final class Url implements ChildNodeInterface
 {
     /**
      * URL of the page.
+     *
      * MUST begin with the protocol (as it will be added later) AND MUST
      * end with a trailing slash, if your web server requires it. This value
      * must be less than 2,048 characters.
      */
-    private $loc;
+    private string $loc;
 
     /**
      * The date of last modification of the file.
@@ -25,19 +24,17 @@ class Url
      * NOTE This tag is separate from the If-Modified-Since (304) header
      * the server can return, and search engines may use the information from
      * both sources differently.
-     *
-     * @var \DateTimeInterface
      */
-    private $lastmod;
+    private ?DateTimeInterface $lastModified;
 
     /**
      * How frequently the page is likely to change. This value provides general
      * information to search engines and may not correlate exactly to how often
      * they crawl the page.
      *
-     * @see ChangeFrequency class
+     * @see \Camelot\Sitemap\Sitemap
      */
-    private $changeFreq;
+    private ?ChangeFrequency $changeFrequency;
 
     /**
      * The priority of this URL relative to other URLs on your site. Valid
@@ -47,19 +44,53 @@ class Url
      *
      * The default priority of a page is 0.5 (if not set in the sitemap).
      */
-    private $priority;
+    private ?float $priority;
 
-    private $videos = [];
+    /**
+     * Alternate urls list, locale indexed.
+     *
+     * If you have multiple language versions of a URL, each language page in
+     * the set must use rel="alternate" hreflang="x" to identify all language
+     * versions including itself. For example, if your site provides content
+     * in French, English, and Spanish, the Spanish version must include a
+     * rel="alternate" hreflang="x" link for itself in addition to links to the
+     * French and English versions. Similarly the English and French versions
+     * must each include the same references to the French, English, and
+     * Spanish versions.
+     *
+     * @var AlternateUrl[]
+     */
+    private array $alternateUrl = [];
 
-    private $images = [];
+    /**
+     * @see https://support.google.com/webmasters/answer/178636
+     *
+     * @var Image[]
+     */
+    private array $images = [];
 
-    public function __construct(string $loc)
+    /**
+     * @see https://support.google.com/webmasters/answer/80471
+     *
+     * @var Video[]
+     */
+    private array $videos = [];
+
+    public function __construct(string $loc, ?DateTimeInterface $lastMod = null, ?ChangeFrequency $changeFreq = null, ?float $priority = null)
     {
-        if (\strlen($loc) > 2048) {
-            throw new \DomainException('The loc value must be less than 2,048 characters');
-        }
+        Assert::urlHasScheme($loc);
+        Assert::stringLength($loc, 1, 2048, 'loc');
+        Assert::range($priority, 0, 5, 'priority');
 
         $this->loc = $loc;
+        $this->lastModified = $lastMod;
+        $this->changeFrequency = $changeFreq;
+        $this->priority = $priority;
+    }
+
+    public static function create(string $loc, ?DateTimeInterface $lastMod = null, ?ChangeFrequency $changeFreq = null, ?float $priority = null): self
+    {
+        return new self($loc, $lastMod, $changeFreq, $priority);
     }
 
     public function getLoc(): string
@@ -67,45 +98,28 @@ class Url
         return $this->loc;
     }
 
-    public function setLastmod(\DateTimeInterface $lastmod): void
+    public function getLastModified(): ?string
     {
-        $this->lastmod = $lastmod;
+        return $this->lastModified ? $this->lastModified->format(DateTimeInterface::W3C) : null;
     }
 
-    public function getLastmod(): ?string
+    public function setLastModified(?DateTimeInterface $lastModified): self
     {
-        if ($this->lastmod === null) {
-            return null;
-        }
+        $this->lastModified = $lastModified;
 
-        if ($this->changeFreq === null || \in_array($this->changeFreq, [ChangeFrequency::ALWAYS, ChangeFrequency::HOURLY], true)) {
-            return $this->lastmod->format(\DateTime::W3C);
-        }
-
-        return $this->lastmod->format('Y-m-d');
+        return $this;
     }
 
-    public function setChangeFreq(string $changeFreq): void
+    public function getChangeFrequency(): ?string
     {
-        if ($changeFreq !== null && !ChangeFrequency::isValid($changeFreq)) {
-            throw new \DomainException(sprintf('Invalid changefreq given ("%s"). Valid values are: %s', $changeFreq, implode(', ', ChangeFrequency::KNOWN_FREQUENCIES)));
-        }
-
-        $this->changeFreq = $changeFreq;
+        return $this->changeFrequency ? $this->changeFrequency->get() : null;
     }
 
-    public function getChangeFreq(): ?string
+    public function setChangeFrequency(?ChangeFrequency $changeFrequency): self
     {
-        return $this->changeFreq;
-    }
+        $this->changeFrequency = $changeFrequency;
 
-    public function setPriority(float $priority): void
-    {
-        if ($priority < 0 || $priority > 1) {
-            throw new \DomainException('The priority must be between 0 and 1');
-        }
-
-        $this->priority = $priority;
+        return $this;
     }
 
     public function getPriority(): ?float
@@ -113,42 +127,52 @@ class Url
         return $this->priority;
     }
 
-    public function addVideo(Video $video): void
+    public function setPriority(?float $priority): self
     {
-        $this->videos[] = $video;
+        Assert::range($priority, 0, 5, 'priority');
+
+        $this->priority = $priority;
+
+        return $this;
     }
 
-    /**
-     * @param Video[] $videos
-     */
-    public function setVideos(iterable $videos): void
+    /** Add an alternate url to the current one. */
+    public function addAlternateUrl(AlternateUrl $url): self
     {
-        $this->videos = $videos;
+        $this->alternateUrl[] = $url;
+
+        return $this;
     }
 
-    /**
-     * @return Video[]
-     */
-    public function getVideos(): iterable
+    /** @return AlternateUrl[] */
+    public function getAlternateUrls(): array
+    {
+        return $this->alternateUrl;
+    }
+
+    /** @return Image[] */
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        $this->images[] = $image;
+
+        return $this;
+    }
+
+    /** @return Video[] */
+    public function getVideos(): array
     {
         return $this->videos;
     }
 
-    public function addImage(Image $image): void
+    public function addVideo(Video $video): self
     {
-        $this->images[] = $image;
-    }
+        $this->videos[] = $video;
 
-    public function setImages(iterable $images): void
-    {
-        $this->images = $images;
-    }
-
-    /**
-     * @return Image[]
-     */
-    public function getImages(): iterable
-    {
-        return $this->images;
+        return $this;
     }
 }

@@ -22,7 +22,7 @@ class RichXmlFormatterTest extends XmlFormatterTest
     {
         $url = new AlternateUrl('http://www.google.fr');
         $url->setPriority(0.2);
-        $url->setChangeFreq(ChangeFrequency::NEVER);
+        $url->setChangeFrequency(ChangeFrequency::NEVER);
         $url->addAlternateUrl('en', 'http://www.google.com');
         $url->addAlternateUrl('es-es', 'http://www.google.es');
 

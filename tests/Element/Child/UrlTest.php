@@ -1,115 +1,85 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Camelot\Sitemap\Tests\Element\Child;
 
+use Camelot\Sitemap\Element\Child\AlternateUrl;
 use Camelot\Sitemap\Element\Child\ChangeFrequency;
+use Camelot\Sitemap\Element\Child\ChildInterface;
+use Camelot\Sitemap\Element\Child\Image;
 use Camelot\Sitemap\Element\Child\Url;
 use Camelot\Sitemap\Element\Child\Video;
+use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
-class UrlTest extends TestCase
+/**
+ * @covers \Camelot\Sitemap\Element\Child\Url
+ *
+ * @internal
+ */
+final class UrlTest extends TestCase
 {
-    public function testLocMaxLength(): void
-    {
-        $this->expectException(\DomainException::class);
+    use LocLastModifiedTestTrait;
 
-        new \Camelot\Sitemap\Element\Child\Url('http://google.fr/?q=' . str_repeat('o', 2048));
+    public function providerOptions(): iterable
+    {
+        $loc = 'https://sitemap.test/';
+
+        yield 'Loc only' => [$loc, null, null, null];
+        yield 'Loc & lastMod' => [$loc, new DateTimeImmutable('2000-01-02'), null, null];
+        yield 'Loc & changeFreq' => [$loc, null, ChangeFrequency::hourly(), null];
+        yield 'Loc & Priority' => [$loc, null, null, 0.3];
+        yield 'All' => [$loc, new DateTimeImmutable('2000-01-02'), ChangeFrequency::hourly(), 0.3];
     }
 
     /**
-     * @dataProvider invalidPriorityProvider
+     * @dataProvider providerOptions
      */
-    public function testInvalidPriority($priority): void
+    public function testCreate(string $loc, ?DateTimeInterface $lastMod, ?ChangeFrequency $changeFreq, ?float $priority): void
     {
-        $this->expectException(\DomainException::class);
-
-        $url = new \Camelot\Sitemap\Element\Child\Url('http://www.google.fr/');
-        $url->setPriority($priority);
+        static::assertInstanceOf(Url::class, Url::create($loc, $lastMod, $changeFreq, $priority));
     }
 
-    public function testInvalidChangefreq(): void
+    public function testChangeFrequency(): void
     {
-        $this->expectException(\DomainException::class);
-
-        $url = new Url('http://www.google.fr/');
-        $url->setChangeFreq('foo');
+        static::assertSame('hourly', $this->getUrl()->setChangeFrequency(ChangeFrequency::hourly())->getChangeFrequency());
     }
 
-    /**
-     * @dataProvider changefreqProvider
-     */
-    public function testChangefreq($changefreq): void
+    public function testPriority(): void
     {
-        $url = new Url('http://www.google.fr/');
-        $url->setChangeFreq($changefreq);
-
-        $this->assertSame($changefreq, $url->getChangeFreq());
+        static::assertSame(0.3, $this->getUrl()->setPriority(0.3)->getPriority());
     }
 
-    /**
-     * @dataProvider lastmodProvider
-     */
-    public function testLastmodFormatting($lastmod, $changefreq, $expectedLastmod): void
+    public function testAlternateUrls(): void
     {
-        $url = new Url('http://www.google.fr/');
-        $url->setLastmod($lastmod);
-        $url->setChangeFreq($changefreq);
+        $expected = new AlternateUrl('nl', 'https://nl.sitemap.test');
 
-        $this->assertSame($expectedLastmod, $url->getLastmod());
+        static::assertSame([$expected], $this->getUrl()->addAlternateUrl($expected)->getAlternateUrls());
     }
 
     public function testImages(): void
     {
-        $url = new Url('http://www.google.fr/');
-        $image = new \Camelot\Sitemap\Element\Child\Image('https://www.google.fr/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');
+        $expected = new Image('https://sitemap.test/image.png');
 
-        $url->setImages([$image]);
-
-        $this->assertSame([$image], $url->getImages());
+        static::assertSame([$expected], $this->getUrl()->addImage($expected)->getImages());
     }
 
     public function testVideos(): void
     {
-        $url = new \Camelot\Sitemap\Element\Child\Url('http://www.google.fr/');
-        $video = new Video('Title', 'Description.', 'https://thumbnail.loc/img.jpg');
+        $expected = new Video('Title', 'Description', 'https://sitemap.test/thumbnail.png');
 
-        $url->setVideos([$video]);
-
-        $this->assertSame([$video], $url->getVideos());
+        static::assertSame([$expected], $this->getUrl()->addVideo($expected)->getVideos());
     }
 
-    public function lastmodProvider()
+    protected function getTestSubject(string $loc, ?DateTimeInterface $lastMod = null): ChildInterface
     {
-        return [
-            [new \DateTime('2012-12-20 18:44'), ChangeFrequency::HOURLY, $this->dateFormatW3C('2012-12-20 18:44')],
-            [new \DateTime('2012-12-20 18:44'), ChangeFrequency::ALWAYS, $this->dateFormatW3C('2012-12-20 18:44')],
-            [new \DateTime('2012-12-20 18:44'), ChangeFrequency::DAILY, '2012-12-20'],
-        ];
+        return Url::create($loc, $lastMod);
     }
 
-    public function changefreqProvider()
+    private function getUrl(): Url
     {
-        return [
-            [ChangeFrequency::ALWAYS],
-            [ChangeFrequency::HOURLY],
-            [ChangeFrequency::DAILY],
-            [ChangeFrequency::WEEKLY],
-            [ChangeFrequency::MONTHLY],
-            [ChangeFrequency::YEARLY],
-            [ChangeFrequency::NEVER],
-        ];
-    }
-
-    public function invalidPriorityProvider()
-    {
-        return [
-            [-0.1],
-            [1.1],
-        ];
-    }
-
-    private function dateFormatW3C($date)
-    {
-        return (new \DateTime($date))->format(\DateTime::W3C);
+        return Url::create('https://sitemap.test/');
     }
 }

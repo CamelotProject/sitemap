@@ -40,7 +40,7 @@ final class DefaultValues
         return $this->lastmod !== null;
     }
 
-    public function getLastmod(): ?\DateTimeInterface
+    public function getLastModified(): ?\DateTimeInterface
     {
         return $this->lastmod;
     }
@@ -60,7 +60,7 @@ final class DefaultValues
         return $this->changeFreq !== null;
     }
 
-    public function getChangeFreq(): ?string
+    public function getChangeFrequency(): ?string
     {
         return $this->changeFreq;
     }

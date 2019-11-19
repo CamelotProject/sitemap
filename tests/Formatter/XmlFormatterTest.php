@@ -21,7 +21,7 @@ class TestableXml extends Formatter\Xml
 class XmlFormatterTest extends TestCase
 {
     /**
-     * @var \SitemapGenerator\SitemapIndexFormatter
+     * @var Formatter\FormatterInterface
      */
     protected $formatter;
 
@@ -63,7 +63,7 @@ class XmlFormatterTest extends TestCase
     {
         $url = new Url('http://www.google.fr');
         $url->setPriority(0.2);
-        $url->setChangeFreq(ChangeFrequency::NEVER);
+        $url->setChangeFrequency(ChangeFrequency::never());
 
         $this->assertSame("<url>\n" .
 "\t<loc>http://www.google.fr</loc>\n" .
@@ -76,7 +76,7 @@ class XmlFormatterTest extends TestCase
     {
         $lastmod = new \DateTimeImmutable('2016-02-28 14:51:22', new \DateTimeZone('Europe/Paris'));
         $url = new Url('http://www.google.fr');
-        $url->setLastmod($lastmod);
+        $url->setLastModified($lastmod);
 
         $this->assertSame("<url>\n" .
 "\t<loc>http://www.google.fr</loc>\n" .
@@ -88,7 +88,7 @@ class XmlFormatterTest extends TestCase
     {
         $url = new Url('http://www.google.fr');
         $url->setPriority(0.2);
-        $url->setChangeFreq(ChangeFrequency::NEVER);
+        $url->setChangeFrequency(ChangeFrequency::never());
 
         $video = new Video('Grilling steaks for summer', 'Alkis shows you how to get perfectly done steaks every time', 'http://www.example.com/thumbs/123.jpg');
         $video->setContentLoc('http://www.example.com/video123.flv');
@@ -118,7 +118,7 @@ class XmlFormatterTest extends TestCase
     {
         $url = new Url('http://www.google.fr');
         $url->setPriority(0.2);
-        $url->setChangeFreq(ChangeFrequency::NEVER);
+        $url->setChangeFrequency(ChangeFrequency::never());
 
         $image = new Image('http://www.example.com/thumbs/123.jpg');
         $image->setTitle('Grilling steaks for summer');
@@ -140,7 +140,7 @@ class XmlFormatterTest extends TestCase
     {
         $url = new Url('http://www.google.fr');
         $url->setPriority(0.2);
-        $url->setChangeFreq(ChangeFrequency::NEVER);
+        $url->setChangeFrequency(ChangeFrequency::never());
 
         $video = new Video('Grilling steaks for summer', 'Alkis shows you how to get perfectly done steaks every time', 'http://www.example.com/thumbs/123.jpg');
         $url->addVideo($video);
@@ -218,7 +218,7 @@ class XmlFormatterTest extends TestCase
     {
         $url = new Url('http://www.google.fr/?s=joe"');
         $url->setPriority(0.2);
-        $url->setChangeFreq(ChangeFrequency::NEVER);
+        $url->setChangeFrequency(ChangeFrequency::never());
 
         $image = new Image('http://www.example.com/thumbs/123.jpg');
         $image->setTitle('Grilling steaks for "summer"');

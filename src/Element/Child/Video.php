@@ -4,44 +4,33 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Element\Child;
 
+use Camelot\Sitemap\Exception\DomainException;
+use Camelot\Sitemap\Util\Assert;
+use DateTimeInterface;
+use function count;
+use const PHP_INT_MAX;
+
 /**
  * Represents a video in a sitemap entry.
  *
  * @see https://developers.google.com/webmasters/videosearch/sitemaps
  */
-final class Video
+final class Video implements UrlExtensionInterface
 {
-    public const RESTRICTION_DENY = 'deny';
-    public const RESTRICTION_ALLOW = 'allow';
-
-    public const PLATFORM_TV = 'tv';
-    public const PLATFORM_MOBILE = 'mobile';
-    public const PLATFORM_WEB = 'web';
-
-    /*********************
-     * Required attributes
-     ********************/
+    // Required attributes
 
     /**
      * A URL pointing to the video thumbnail image file. Images must be at
      * least 160x90 pixels and at most 1920x1080 pixels. We recommend images
      * in .jpg, .png, or. gif formats.
      */
-    private $thumbnailLoc;
+    private string $thumbnailLoc;
+    /** The title of the video. Maximum 100 characters. */
+    private string $title;
+    /** The description of the video. Maximum 2048 characters. */
+    private string $description;
 
-    /**
-     * The title of the video. Maximum 100 characters.
-     */
-    private $title;
-
-    /**
-     * The description of the video. Maximum 2048 characters.
-     */
-    private $description;
-
-    /*********************
-     * Optional attributes
-     *********************/
+    // Optional attributes
 
     /**
      * You must specify at least one of playerLoc or contentLoc attributes.
@@ -50,8 +39,7 @@ final class Video
      * .mpg, .mpeg, .mp4, .m4v, .mov, .wmv, .asf, .avi, .ra, .ram, .rm, .flv,
      * or other video file format.
      */
-    private $contentLoc;
-
+    private ?string $contentLoc = null;
     /**
      * You must specify at least one of playerLoc or contentLoc.
      *
@@ -69,110 +57,97 @@ final class Video
      *
      * Example player URL for Dailymotion: http://www.dailymotion.com/swf/x1o2g
      */
-    private $playerLoc;
-
+    private ?VideoPlayerLocation $playerLoc = null;
     /**
      * The duration of the video in seconds. Value must be between 0 and
      * 28800 (8 hours).
      */
-    private $duration;
-
+    private ?int $duration = null;
     /**
      * The date after which the video will no longer be available. Don't
      * supply this information if your video does not expire.
-     *
-     * @var \DateTimeInterface
      */
-    private $expirationDate;
-
+    private ?DateTimeInterface $expirationDate = null;
     /**
      * The rating of the video. Allowed values are float numbers in the range
      * 0.0 to 5.0.
      */
-    private $rating;
+    private ?float $rating = null;
 
     /**
-     * The number of times the video has been viewed.
-     */
-    private $viewCount;
-
-    /**
-     * The date the video was first published
+     * Use <video:content_segment_loc>; only in conjunction with <video:player_loc>.
      *
-     * @var \DateTimeInterface
+     * If you publish your video as a series of raw videos (for example, if
+     * you submit a full movie as a continuous series of shorter clips),
+     * you can use the <video:content_segment_loc> to supply SEs with
+     * a series of URLs, in the order in which they should be concatenated
+     * to recreate the video in its entirety. Each URL should point to a
+     * .mpg, .mpeg, .mp4, .m4v, .mov, .wmv, .asf, .avi, .ra, .ram, .rm,
+     * .flv, or other video file format. It should not point to any Flash
+     * content.
+     *
+     * @var VideoContentSegmentLocation[]
      */
-    private $publicationDate;
-
-    /**
-     * No if the video should be available only to users with SafeSearch turned off.
-     */
-    private $familyFriendly;
-
-    /**
-     * Tags associated with the video.
-     */
-    private $tags = [];
-
+    private array $contentSegmentLocations = [];
+    /** The number of times the video has been viewed. */
+    private ?int $viewCount = null;
+    /** The date the video was first published. */
+    private ?DateTimeInterface $publicationDate = null;
+    /** Tags associated with the video. */
+    private array $tags = [];
     /**
      * The video's category. For example, cooking. The value should be a
      * string no longer than 256 characters.
      */
-    private $category;
-
+    private ?string $category = null;
+    /** No if the video should be available only to users with SafeSearch turned off. */
+    private ?bool $familyFriendly = null;
     /**
      * A space-delimited list of countries where the video may or may not be
      * played. Allowed values are country codes in ISO 3166 format.
      *
      * @see https://developers.google.com/webmasters/videosearch/countryrestrictions
      */
-    private $restrictions;
-
-    /**
-     * A link to the gallery (collection of videos) in which this video appears.
-     */
-    private $galleryLoc;
-
-    /**
-     * Indicates whether a subscription (either paid or free) is required to view the video.
-     */
-    private $requiresSubscription;
-
-    /**
-     * The video uploader's name.
-     */
-    private $uploader;
-
+    private ?VideoRestriction $restriction = null;
+    /** A link to the gallery (collection of videos) in which this video appears. */
+    private ?VideoGalleryLocation $galleryLoc = null;
+    /** @var VideoPrice[] */
+    private array $prices = [];
+    /** Indicates whether a subscription (either paid or free) is required to view the video. */
+    private ?bool $requiresSubscription = null;
+    /** The video uploader. */
+    private ?VideoUploader $uploader = null;
+    /** Encloses all information about a single TV video. */
+    private ?VideoTvShow $tvShow = null;
     /**
      * A list of space-delimited platforms where the video may or may not be
      * played. Allowed values are web, mobile, and tv.
      *
      * @see https://developers.google.com/webmasters/videosearch/platformrestrictions
      */
-    private $platforms;
-
+    private ?VideoPlatform $platform = null;
+    /** Indicates whether the video is a live stream. */
+    private ?bool $live = null;
     /**
-     * Indicates whether the video is a live stream.
+     * Unambiguous identifiers for the video within a given identification context.
+     *
+     * @var VideoId[]
      */
-    private $live;
+    private array $ids = [];
 
     public function __construct(string $title, string $description, string $thumbnailLoc)
     {
-        if (\strlen($title) > 100) {
-            throw new \DomainException('The title value must be less than 100 characters');
-        }
-
-        if (\strlen($description) > 2048) {
-            throw new \DomainException('The description value must be less than 2,048 characters');
-        }
+        Assert::stringLength($title, 1, 100, 'title');
+        Assert::stringLength($description, 1, 2048, 'description');
 
         $this->title = $title;
         $this->description = $description;
         $this->thumbnailLoc = $thumbnailLoc;
     }
 
-    public function getTitle(): string
+    public static function create(string $title, string $description, string $thumbnailLoc): self
     {
-        return $this->title;
+        return new self($title, $description, $thumbnailLoc);
     }
 
     public function getThumbnailLoc(): string
@@ -180,14 +155,14 @@ final class Video
         return $this->thumbnailLoc;
     }
 
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
     public function getDescription(): string
     {
         return $this->description;
-    }
-
-    public function setContentLoc(string $loc): void
-    {
-        $this->contentLoc = $loc;
     }
 
     public function getContentLoc(): ?string
@@ -195,27 +170,23 @@ final class Video
         return $this->contentLoc;
     }
 
-    public function setPlayerLoc(string $loc, bool $allowEmbed = true, ?string $autoplay = null): void
+    public function setContentLoc(string $loc): self
     {
-        $this->playerLoc = [
-            'loc' => $loc,
-            'allow_embed' => $allowEmbed,
-            'autoplay' => $autoplay,
-        ];
+        $this->contentLoc = $loc;
+
+        return $this;
     }
 
-    public function getPlayerLoc(): ?array
+    public function getPlayerLoc(): ?VideoPlayerLocation
     {
         return $this->playerLoc;
     }
 
-    public function setDuration(int $duration): void
+    public function setPlayerLoc(VideoPlayerLocation $playerLocation): self
     {
-        if ($duration < 0 || $duration > 28800) {
-            throw new \DomainException('The duration must be between 0 and 28800 seconds');
-        }
+        $this->playerLoc = $playerLocation;
 
-        $this->duration = $duration;
+        return $this;
     }
 
     public function getDuration(): ?int
@@ -223,27 +194,25 @@ final class Video
         return $this->duration;
     }
 
-    public function setExpirationDate(\DateTimeInterface $date): void
+    public function setDuration(int $duration): self
     {
-        $this->expirationDate = $date;
+        Assert::range($duration, 0, 28800, 'duration');
+
+        $this->duration = $duration;
+
+        return $this;
     }
 
     public function getExpirationDate(): ?string
     {
-        if ($this->expirationDate === null) {
-            return null;
-        }
-
-        return $this->expirationDate->format(\DateTime::W3C);
+        return $this->expirationDate ? $this->expirationDate->format(DateTimeInterface::W3C) : null;
     }
 
-    public function setRating(float $rating): void
+    public function setExpirationDate(DateTimeInterface $date): self
     {
-        if ($rating < 0 || $rating > 5) {
-            throw new \DomainException('The rating must be between 0 and 5');
-        }
+        $this->expirationDate = $date;
 
-        $this->rating = $rating;
+        return $this;
     }
 
     public function getRating(): ?float
@@ -251,13 +220,25 @@ final class Video
         return $this->rating;
     }
 
-    public function setViewCount(int $count): void
+    public function setRating(float $rating): self
     {
-        if ($count < 0) {
-            throw new \DomainException('The view count must be positive');
-        }
+        Assert::range($rating, 0, 5, 'rating');
 
-        $this->viewCount = $count;
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function addContentSegmentLocation(VideoContentSegmentLocation $contentSegmentLocation): self
+    {
+        $this->contentSegmentLocations[] = $contentSegmentLocation;
+
+        return $this;
+    }
+
+    public function getContentSegmentLocations(): array
+    {
+        return $this->contentSegmentLocations;
     }
 
     public function getViewCount(): ?int
@@ -265,37 +246,37 @@ final class Video
         return $this->viewCount;
     }
 
-    public function setPublicationDate(\DateTimeInterface $date): void
+    public function setViewCount(int $count): self
     {
-        $this->publicationDate = $date;
+        Assert::range($count, 0, PHP_INT_MAX, 'view_count');
+
+        $this->viewCount = $count;
+
+        return $this;
     }
 
     public function getPublicationDate(): ?string
     {
-        if ($this->publicationDate === null) {
-            return null;
-        }
-
-        return $this->publicationDate->format(\DateTime::W3C);
+        return $this->publicationDate ? $this->publicationDate->format(DateTimeInterface::W3C) : null;
     }
 
-    public function setFamilyFriendly(bool $friendly): void
+    public function setPublicationDate(DateTimeInterface $date): self
     {
-        $this->familyFriendly = $friendly;
+        $this->publicationDate = $date;
+
+        return $this;
     }
 
-    public function getFamilyFriendly(): ?bool
+    public function isFamilyFriendly(): ?bool
     {
         return $this->familyFriendly;
     }
 
-    public function setTags(array $tags): void
+    public function setFamilyFriendly(bool $friendly): self
     {
-        if (\count($tags) > 32) {
-            throw new \DomainException('A maximum of 32 tags is allowed.');
-        }
+        $this->familyFriendly = $friendly;
 
-        $this->tags = $tags;
+        return $this;
     }
 
     public function getTags(): array
@@ -303,13 +284,15 @@ final class Video
         return $this->tags;
     }
 
-    public function setCategory(string $category): void
+    public function setTags(array $tags): self
     {
-        if (\strlen($category) > 256) {
-            throw new \DomainException('The category value must be less than 256 characters');
+        if (count($tags) > 32) {
+            throw new DomainException('A maximum of 32 tags is allowed.');
         }
 
-        $this->category = $category;
+        $this->tags = $tags;
+
+        return $this;
     }
 
     public function getCategory(): ?string
@@ -317,87 +300,120 @@ final class Video
         return $this->category;
     }
 
-    public function setRestrictions(array $restrictions, string $relationship = self::RESTRICTION_DENY): void
+    public function setCategory(string $category): self
     {
-        if ($relationship !== self::RESTRICTION_ALLOW && $relationship !== self::RESTRICTION_DENY) {
-            throw new \InvalidArgumentException('The relationship must be deny or allow');
-        }
+        Assert::stringLength($category, 1, 256, 'category');
 
-        $this->restrictions = [
-            'countries' => $restrictions,
-            'relationship' => $relationship,
-        ];
+        $this->category = $category;
+
+        return $this;
     }
 
-    public function getRestrictions(): ?array
+    public function getRestriction(): ?VideoRestriction
     {
-        return $this->restrictions;
+        return $this->restriction;
     }
 
-    public function setGalleryLoc(string $loc, ?string $title = null): void
+    public function setRestriction(VideoRestriction $restriction): self
     {
-        $this->galleryLoc = [
-            'loc' => $loc,
-            'title' => $title,
-        ];
+        $this->restriction = $restriction;
+
+        return $this;
     }
 
-    public function getGalleryLoc(): ?array
+    public function getGalleryLoc(): ?VideoGalleryLocation
     {
         return $this->galleryLoc;
     }
 
-    public function setRequiresSubscription(bool $requiresSubscription): void
+    public function setGalleryLoc(VideoGalleryLocation $galleryLocation): self
     {
-        $this->requiresSubscription = $requiresSubscription;
+        $this->galleryLoc = $galleryLocation;
+
+        return $this;
     }
 
-    public function getRequiresSubscription(): ?bool
+    public function isRequiresSubscription(): ?bool
     {
         return $this->requiresSubscription;
     }
 
-    public function setUploader(string $uploader, ?string $info = null): void
+    public function setRequiresSubscription(bool $requiresSubscription): self
     {
-        $this->uploader = [
-            'name' => $uploader,
-            'info' => $info,
-        ];
+        $this->requiresSubscription = $requiresSubscription;
+
+        return $this;
     }
 
-    public function getUploader(): ?array
+    public function getUploader(): ?VideoUploader
     {
         return $this->uploader;
     }
 
-    public function setPlatforms(array $platforms): void
+    public function setUploader(VideoUploader $uploader): self
     {
-        $valid_platforms = [self::PLATFORM_TV, self::PLATFORM_WEB, self::PLATFORM_MOBILE];
-        foreach ($platforms as $platform => $relationship) {
-            if (!\in_array($platform, $valid_platforms, true)) {
-                throw new \DomainException(sprintf('Invalid platform given. Valid values are: %s', implode(', ', $valid_platforms)));
-            }
+        $this->uploader = $uploader;
 
-            if ($relationship !== self::RESTRICTION_ALLOW && $relationship !== self::RESTRICTION_DENY) {
-                throw new \InvalidArgumentException('The relationship must be deny or allow');
-            }
-        }
-
-        $this->platforms = $platforms;
+        return $this;
     }
 
-    public function getPlatforms(): ?array
+    public function getTvShow(): ?VideoTvShow
     {
-        return $this->platforms;
+        return $this->tvShow;
     }
 
-    public function setLive(bool $live): void
+    public function setTvShow(VideoTvShow $tvShow): self
     {
-        $this->live = $live;
+        $this->tvShow = $tvShow;
+
+        return $this;
     }
 
-    public function getLive(): ?bool
+    public function getPlatform(): ?VideoPlatform
+    {
+        return $this->platform;
+    }
+
+    public function setPlatform(VideoPlatform $platform): self
+    {
+        $this->platform = $platform;
+
+        return $this;
+    }
+
+    public function addPrice(VideoPrice $price): self
+    {
+        $this->prices[] = $price;
+
+        return $this;
+    }
+
+    public function getPrices(): array
+    {
+        return $this->prices;
+    }
+
+    public function isLive(): ?bool
     {
         return $this->live;
+    }
+
+    public function setLive(bool $live): self
+    {
+        $this->live = $live;
+
+        return $this;
+    }
+
+    public function addId(VideoId $id): self
+    {
+        $this->ids[] = $id;
+
+        return $this;
+    }
+
+    public function getIds(): array
+    {
+        return $this->ids;
     }
 }

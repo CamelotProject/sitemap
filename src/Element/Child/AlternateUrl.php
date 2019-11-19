@@ -4,39 +4,29 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Element\Child;
 
-/**
- * Represents a "rich" sitemap entry.
- *
- * @see http://support.google.com/webmasters/bin/answer.py?hl=en&answer=2620865
- */
-final class AlternateUrl extends Url
-{
-    /**
-     * Alternate urls list, locale indexed.
-     */
-    private $alternateUrl = [];
+use Camelot\Sitemap\Util\Assert;
 
-    /**
-     * Add an alternate url to the current one.
-     *
-     * If you have multiple language versions of a URL, each language page in
-     * the set must use rel="alternate" hreflang="x" to identify all language
-     * versions including itself. For example, if your site provides content
-     * in French, English, and Spanish, the Spanish version must include a
-     * rel="alternate" hreflang="x" link for itself in addition to links to the
-     * French and English versions. Similarly the English and French versions
-     * must each include the same references to the French, English, and
-     * Spanish versions.
-     *
-     * @param string $locale The url's language (and optionnaly region. Ex: en, en-us).
-     */
-    public function addAlternateUrl(string $locale, string $url): void
+final class AlternateUrl
+{
+    private string $locale;
+    /** The URL's language in ISO 639-1, and optionally a region in ISO 3166-1 Alpha 2, format. e.g. 'en', 'en-us'. */
+    private string $url;
+
+    public function __construct(string $locale, string $url)
     {
-        $this->alternateUrl[$locale] = $url;
+        Assert::urlHasScheme($url);
+
+        $this->locale = $locale;
+        $this->url = $url;
     }
 
-    public function getAlternateUrls(): iterable
+    public function getLocale(): string
     {
-        return $this->alternateUrl;
+        return $this->locale;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
     }
 }

@@ -41,7 +41,7 @@ abstract class AbstractProvider
         $url = new Url($this->getResultLoc($result));
 
         if ($this->options['lastmod'] !== null) {
-            $url->setLastmod($this->getColumnValue($result, $this->options['lastmod']));
+            $url->setLastModified($this->getColumnValue($result, $this->options['lastmod']));
         }
 
         return $url;

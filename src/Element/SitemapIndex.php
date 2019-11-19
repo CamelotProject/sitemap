@@ -4,53 +4,61 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Element;
 
-/**
- * Represents a sitemap index entry.
- *
- * @see http://www.sitemaps.org/protocol.html
- */
-final class SitemapIndex
+use Camelot\Sitemap\Element\Child\ChildNodeInterface;
+use Camelot\Sitemap\Element\Child\Sitemap;
+use function iter\chain;
+use function iter\toIter;
+
+final class SitemapIndex implements RootElementInterface
 {
-    /**
-     * URL of the sitemap index.
-     * Should NOT begin with the protocol (as it will be added later) but MUST
-     * end with a trailing slash, if your web server requires it. This value
-     * must be less than 2,048 characters.
-     */
-    private $loc;
+    private iterable $sitemaps;
+    private iterable $urlSets;
 
-    /**
-     * The date of last modification of the file.
-     *
-     * NOTE This tag is separate from the If-Modified-Since (304) header
-     * the server can return, and search engines may use the information from
-     * both sources differently.
-     *
-     * @var \DateTimeInterface
-     */
-    private $lastmod;
-
-    public function __construct(string $loc, \DateTimeInterface $lastmod = null)
+    public function __construct(iterable $sitemaps = [], iterable $urlSets = [])
     {
-        if (\strlen($loc) > 2048) {
-            throw new \DomainException('The loc value must be less than 2,048 characters');
-        }
-
-        $this->loc = $loc;
-        $this->lastmod = $lastmod;
+        $this->sitemaps = toIter($sitemaps);
+        $this->urlSets = toIter($urlSets);
     }
 
-    public function getLoc(): string
+    /** @return Sitemap[] */
+    public function getChildren(): iterable
     {
-        return $this->loc;
+        return $this->sitemaps;
     }
 
-    public function getLastmod(): ?string
+    public function setChildren(iterable $children): RootElementInterface
     {
-        if ($this->lastmod === null) {
-            return null;
-        }
+        $this->sitemaps = toIter($children);
 
-        return $this->lastmod->format(\DateTime::W3C);
+        return $this;
+    }
+
+    /** @param Sitemap $child */
+    public function addChild(ChildNodeInterface $child): RootElementInterface
+    {
+        $this->sitemaps = chain($this->sitemaps, [$child]);
+
+        return $this;
+    }
+
+    /** @return UrlSet[] */
+    public function getGrandChildren(): iterable
+    {
+        return $this->urlSets;
+    }
+
+    public function setGrandChildren(iterable $urlSets): RootElementInterface
+    {
+        $this->urlSets = toIter($urlSets);
+
+        return $this;
+    }
+
+    /** @param UrlSet $urlSet */
+    public function addGrandChild(RootElementInterface $urlSet): RootElementInterface
+    {
+        $this->urlSets = chain($this->urlSets, [$urlSet]);
+
+        return $this;
     }
 }

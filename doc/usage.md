@@ -42,7 +42,7 @@ class DummyProvider implements \IteratorAggregate
     {
         $url = new Element\Child\Url('http://www.google.fr');
         $url->setChangefreq(Element\Child\ChangeFrequency::NEVER);
-        $url->setLastmod(new \DateTimeImmutable('2012-12-19 02:28'));
+        $url->setLastModified(new \DateTimeImmutable('2012-12-19 02:28'));
 
         yield $url;
     }
@@ -109,7 +109,7 @@ class DummyProvider implements \IteratorAggregate
     {
         $url = new Element\Child\Url('http://www.google.fr');
         $url->setChangefreq(Element\Child\ChangeFrequency::NEVER);
-        $url->setLastmod(new \DateTime('2012-12-19 02:28'));
+        $url->setLastModified(new \DateTime('2012-12-19 02:28'));
 
         yield $url;
     }

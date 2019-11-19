@@ -38,12 +38,12 @@ final class Route implements \IteratorAggregate
 
             $url = new Element\Child\Url($this->urlGenerator->generate($route['name'], $route['params']));
 
-            if (($changeFreq = $route['changefreq'] ?: $this->defaultValues->getChangeFreq())) {
-                $url->setChangeFreq($changeFreq);
+            if (($changeFreq = $route['changefreq'] ?: $this->defaultValues->getChangeFrequency())) {
+                $url->setChangeFrequency($changeFreq);
             }
 
-            if (($lastMod = $route['lastmod'] ?: $this->defaultValues->getLastmod())) {
-                $url->setLastmod($lastMod);
+            if (($lastMod = $route['lastmod'] ?: $this->defaultValues->getLastModified())) {
+                $url->setLastModified($lastMod);
             }
 
             if (($priority = $route['priority'] ?: $this->defaultValues->getPriority())) {

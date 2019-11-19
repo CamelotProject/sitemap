@@ -21,6 +21,14 @@ use Camelot\Sitemap\Provider\DefaultValues;
  */
 class Sitemap
 {
+    public const CHANGE_FREQ_ALWAYS = 'always';
+    public const CHANGE_FREQ_HOURLY = 'hourly';
+    public const CHANGE_FREQ_DAILY = 'daily';
+    public const CHANGE_FREQ_WEEKLY = 'weekly';
+    public const CHANGE_FREQ_MONTHLY = 'monthly';
+    public const CHANGE_FREQ_YEARLY = 'yearly';
+    public const CHANGE_FREQ_NEVER = 'never';
+
     /**
      * @var \SplObjectStorage
      */
@@ -78,8 +86,8 @@ class Sitemap
             $url->setPriority($defaultValues->getPriority());
         }
 
-        if (!$url->getChangeFreq() && $defaultValues->hasChangeFreq()) {
-            $url->setChangeFreq($defaultValues->getChangeFreq());
+        if (!$url->getChangeFrequency() && $defaultValues->hasChangeFreq()) {
+            $url->setChangeFrequency($defaultValues->getChangeFrequency());
         }
 
         $this->dumper->dump($this->formatter->formatUrl($url));
