@@ -2,7 +2,7 @@
 
 namespace Camelot\Sitemap\Tests\Formatter;
 
-use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Element\Child\Url;
 use Camelot\Sitemap\Formatter;
 use PHPUnit\Framework\TestCase;
 

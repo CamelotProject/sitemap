@@ -1,8 +1,8 @@
 <?php
 
-namespace Camelot\Sitemap\Tests\Entity;
+namespace Camelot\Sitemap\Tests\Element\Child;
 
-use Camelot\Sitemap\Entity\Video;
+use Camelot\Sitemap\Element\Child\Video;
 use PHPUnit\Framework\TestCase;
 
 class VideoTest extends TestCase

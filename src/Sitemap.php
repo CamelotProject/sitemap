@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Camelot\Sitemap;
 
 use Camelot\Sitemap\Dumper\DumperInterface;
-use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Element\Child\Url;
 use Camelot\Sitemap\Formatter\FormatterInterface;
 use Camelot\Sitemap\Provider\DefaultValues;
 

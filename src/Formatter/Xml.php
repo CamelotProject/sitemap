@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Formatter;
 
-use Camelot\Sitemap\Entity;
+use Camelot\Sitemap\Element;
 
 class Xml implements IndexFormatterInterface
 {
@@ -31,12 +31,12 @@ class Xml implements IndexFormatterInterface
         return '</sitemapindex>';
     }
 
-    public function formatUrl(Entity\Url $url): string
+    public function formatUrl(Element\Child\Url $url): string
     {
         return '<url>' . "\n" . $this->formatBody($url) . '</url>' . "\n";
     }
 
-    protected function formatBody(Entity\Url $url): string
+    protected function formatBody(Element\Child\Url $url): string
     {
         $buffer = "\t" . '<loc>' . $this->escape($url->getLoc()) . '</loc>' . "\n";
 
@@ -63,12 +63,12 @@ class Xml implements IndexFormatterInterface
         return $buffer;
     }
 
-    public function formatSitemapIndex(Entity\SitemapIndexEntry $entry): string
+    public function formatSitemapIndex(Element\SitemapIndex $entry): string
     {
         return '<sitemap>' . "\n" . $this->formatSitemapIndexBody($entry) . '</sitemap>' . "\n";
     }
 
-    protected function formatSitemapIndexBody(Entity\SitemapIndexEntry $entry): string
+    protected function formatSitemapIndexBody(Element\SitemapIndex $entry): string
     {
         $buffer = "\t" . '<loc>' . $this->escape($entry->getLoc()) . '</loc>' . "\n";
 
@@ -79,7 +79,7 @@ class Xml implements IndexFormatterInterface
         return $buffer;
     }
 
-    protected function formatVideo(Entity\Video $video): string
+    protected function formatVideo(Element\Child\Video $video): string
     {
         $buffer = "\t" . '<video:video>' . "\n";
 
@@ -171,7 +171,7 @@ class Xml implements IndexFormatterInterface
         return $buffer . "\t" . '</video:video>' . "\n";
     }
 
-    protected function formatImage(Entity\Image $image): string
+    protected function formatImage(Element\Child\Image $image): string
     {
         $buffer = "\t" . '<image:image>' . "\n";
 

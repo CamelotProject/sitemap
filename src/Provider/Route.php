@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Provider;
 
-use Camelot\Sitemap\Entity;
+use Camelot\Sitemap\Element;
 use Camelot\Sitemap\Routing\UrlGeneratorInterface;
 
 final class Route implements \IteratorAggregate
@@ -36,7 +36,7 @@ final class Route implements \IteratorAggregate
         foreach ($this->routes as $route) {
             $route = array_merge($defaultRouteData, $route);
 
-            $url = new Entity\Url($this->urlGenerator->generate($route['name'], $route['params']));
+            $url = new Element\Child\Url($this->urlGenerator->generate($route['name'], $route['params']));
 
             if (($changeFreq = $route['changefreq'] ?: $this->defaultValues->getChangeFreq())) {
                 $url->setChangeFreq($changeFreq);

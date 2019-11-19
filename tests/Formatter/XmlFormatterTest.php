@@ -2,11 +2,11 @@
 
 namespace Camelot\Sitemap\Tests\Formatter;
 
-use Camelot\Sitemap\Entity\ChangeFrequency;
-use Camelot\Sitemap\Entity\Image;
-use Camelot\Sitemap\Entity\SitemapIndexEntry;
-use Camelot\Sitemap\Entity\Url;
-use Camelot\Sitemap\Entity\Video;
+use Camelot\Sitemap\Element\Child\ChangeFrequency;
+use Camelot\Sitemap\Element\Child\Image;
+use Camelot\Sitemap\Element\Child\Url;
+use Camelot\Sitemap\Element\Child\Video;
+use Camelot\Sitemap\Element\SitemapIndex;
 use Camelot\Sitemap\Formatter;
 use PHPUnit\Framework\TestCase;
 
@@ -244,7 +244,7 @@ class XmlFormatterTest extends TestCase
 
     public function testFormatSitemapIndexEntry(): void
     {
-        $sitemapIndex = new SitemapIndexEntry('http://www.example.com/sitemap-1.xml', new \DateTime('2016-02-28 23:42:00', new \DateTimeZone('Europe/Paris')));
+        $sitemapIndex = new SitemapIndex('http://www.example.com/sitemap-1.xml', new \DateTime('2016-02-28 23:42:00', new \DateTimeZone('Europe/Paris')));
 
         $this->assertSame("<sitemap>\n" .
 "\t<loc>http://www.example.com/sitemap-1.xml</loc>\n" .
@@ -254,7 +254,7 @@ class XmlFormatterTest extends TestCase
 
     public function testFormatSitemapIndexEntryNoLastMod(): void
     {
-        $sitemapIndex = new SitemapIndexEntry('http://www.example.com/sitemap-1.xml');
+        $sitemapIndex = new SitemapIndex('http://www.example.com/sitemap-1.xml');
 
         $this->assertSame("<sitemap>\n" .
 "\t<loc>http://www.example.com/sitemap-1.xml</loc>\n" .

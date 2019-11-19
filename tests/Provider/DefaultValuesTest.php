@@ -2,7 +2,7 @@
 
 namespace Camelot\Sitemap\Tests\Provider;
 
-use Camelot\Sitemap\Entity\ChangeFrequency;
+use Camelot\Sitemap\Element\Child\ChangeFrequency;
 use Camelot\Sitemap\Provider\DefaultValues;
 use PHPUnit\Framework\TestCase;
 

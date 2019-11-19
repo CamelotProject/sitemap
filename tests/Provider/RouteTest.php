@@ -2,7 +2,7 @@
 
 namespace Camelot\Sitemap\Tests\Provider;
 
-use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Element\Child\Url;
 use Camelot\Sitemap\Provider\Route as RouteProvider;
 use Camelot\Sitemap\Routing\UrlGeneratorInterface;
 use Camelot\Sitemap\Tests\Fixtures\News;

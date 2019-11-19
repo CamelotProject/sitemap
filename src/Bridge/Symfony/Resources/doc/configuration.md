@@ -15,7 +15,7 @@ the data.
 Exemple provider:
 
 ```php
-use SitemapGenerator\Entity\Url;
+use SitemapGenerator\Element\Url;
 use SitemapGenerator\Provider\ProviderInterface;
 use SitemapGenerator\Sitemap\Sitemap;
 

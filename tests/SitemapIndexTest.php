@@ -3,7 +3,7 @@
 namespace Camelot\Sitemap\Tests;
 
 use Camelot\Sitemap\Dumper\FileDumperInterface;
-use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Element\Child\Url;
 use Camelot\Sitemap\Formatter\IndexFormatterInterface;
 use Camelot\Sitemap\SitemapIndex;
 use PHPUnit\Framework\TestCase;

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Camelot\Sitemap\Entity;
+namespace Camelot\Sitemap\Element\Child;
 
 /**
  * Represents a "rich" sitemap entry.
  *
  * @see http://support.google.com/webmasters/bin/answer.py?hl=en&answer=2620865
  */
-final class RichUrl extends Url
+final class AlternateUrl extends Url
 {
     /**
      * Alternate urls list, locale indexed.

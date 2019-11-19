@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Camelot\Sitemap\Entity;
+namespace Camelot\Sitemap\Element;
 
 /**
  * Represents a sitemap index entry.
  *
  * @see http://www.sitemaps.org/protocol.html
  */
-final class SitemapIndexEntry
+final class SitemapIndex
 {
     /**
      * URL of the sitemap index.

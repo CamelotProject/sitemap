@@ -2,8 +2,8 @@
 
 namespace Camelot\Sitemap\Tests\Formatter;
 
-use Camelot\Sitemap\Entity\SitemapIndexEntry;
-use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Element\Child\Url;
+use Camelot\Sitemap\Element\SitemapIndex;
 use Camelot\Sitemap\Formatter\FormatterInterface;
 use Camelot\Sitemap\Formatter\IndexFormatterInterface;
 use Camelot\Sitemap\Formatter\Spaceless as SpacelessFormatter;
@@ -82,14 +82,14 @@ class SpacelessFormatterTest extends TestCase
     public function testFormatSitemapIndexWithSitemapFormatter(): void
     {
         $formatter = new SpacelessFormatter(new TestableFormatter());
-        $entry = new SitemapIndexEntry('not relevant');
+        $entry = new SitemapIndex('not relevant');
 
         $this->assertSame('', $formatter->formatSitemapIndex($entry));
     }
 
     public function testFormatSitemapIndexWithSitemapIndexFormatter(): void
     {
-        $entry = new SitemapIndexEntry('not relevant');
+        $entry = new SitemapIndex('not relevant');
 
         $sitemapIndexFormatter = $this->createMock(IndexFormatterInterface::class);
         $sitemapIndexFormatter

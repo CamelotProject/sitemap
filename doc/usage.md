@@ -34,14 +34,14 @@ Exemple provider:
 ```php
 <?php
 
-use Camelot\Sitemap\Entity;
+use Camelot\Sitemap\Element;
 
 class DummyProvider implements \IteratorAggregate
 {
     public function getIterator()
     {
-        $url = new Entity\Url('http://www.google.fr');
-        $url->setChangefreq(Entity\ChangeFrequency::NEVER);
+        $url = new Element\Child\Url('http://www.google.fr');
+        $url->setChangefreq(Element\Child\ChangeFrequency::NEVER);
         $url->setLastmod(new \DateTimeImmutable('2012-12-19 02:28'));
 
         yield $url;
@@ -99,7 +99,7 @@ filesystem.
 <?php
 
 use Camelot\Sitemap\Dumper;
-use Camelot\Sitemap\Entity;
+use Camelot\Sitemap\Element;
 use Camelot\Sitemap\Formatter;
 use Camelot\Sitemap\Sitemap;
 
@@ -107,8 +107,8 @@ class DummyProvider implements \IteratorAggregate
 {
     public function getIterator()
     {
-        $url = new Entity\Url('http://www.google.fr');
-        $url->setChangefreq(Entity\ChangeFrequency::NEVER);
+        $url = new Element\Child\Url('http://www.google.fr');
+        $url->setChangefreq(Element\Child\ChangeFrequency::NEVER);
         $url->setLastmod(new \DateTime('2012-12-19 02:28'));
 
         yield $url;

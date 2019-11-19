@@ -2,8 +2,8 @@
 
 namespace Camelot\Sitemap\Tests\Bridge\Symfony\Fixtures\Provider;
 
-use Camelot\Sitemap\Entity\Url;
-use Camelot\Sitemap\Entity\Video;
+use Camelot\Sitemap\Element\Child\Url;
+use Camelot\Sitemap\Element\Child\Video;
 use DateTimeImmutable;
 use IteratorAggregate;
 

@@ -1,11 +1,10 @@
 <?php
 
-namespace Camelot\Sitemap\Tests\Entity;
+namespace Camelot\Sitemap\Tests\Element\Child;
 
-use Camelot\Sitemap\Entity\ChangeFrequency;
-use Camelot\Sitemap\Entity\Image;
-use Camelot\Sitemap\Entity\Url;
-use Camelot\Sitemap\Entity\Video;
+use Camelot\Sitemap\Element\Child\ChangeFrequency;
+use Camelot\Sitemap\Element\Child\Url;
+use Camelot\Sitemap\Element\Child\Video;
 use PHPUnit\Framework\TestCase;
 
 class UrlTest extends TestCase
@@ -14,7 +13,7 @@ class UrlTest extends TestCase
     {
         $this->expectException(\DomainException::class);
 
-        new Url('http://google.fr/?q=' . str_repeat('o', 2048));
+        new \Camelot\Sitemap\Element\Child\Url('http://google.fr/?q=' . str_repeat('o', 2048));
     }
 
     /**
@@ -24,7 +23,7 @@ class UrlTest extends TestCase
     {
         $this->expectException(\DomainException::class);
 
-        $url = new Url('http://www.google.fr/');
+        $url = new \Camelot\Sitemap\Element\Child\Url('http://www.google.fr/');
         $url->setPriority($priority);
     }
 
@@ -62,7 +61,7 @@ class UrlTest extends TestCase
     public function testImages(): void
     {
         $url = new Url('http://www.google.fr/');
-        $image = new Image('https://www.google.fr/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');
+        $image = new \Camelot\Sitemap\Element\Child\Image('https://www.google.fr/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');
 
         $url->setImages([$image]);
 
@@ -71,7 +70,7 @@ class UrlTest extends TestCase
 
     public function testVideos(): void
     {
-        $url = new Url('http://www.google.fr/');
+        $url = new \Camelot\Sitemap\Element\Child\Url('http://www.google.fr/');
         $video = new Video('Title', 'Description.', 'https://thumbnail.loc/img.jpg');
 
         $url->setVideos([$video]);

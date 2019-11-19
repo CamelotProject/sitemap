@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Formatter;
 
-use Camelot\Sitemap\Entity;
+use Camelot\Sitemap\Element;
 
 final class Spaceless implements IndexFormatterInterface
 {
@@ -25,7 +25,7 @@ final class Spaceless implements IndexFormatterInterface
         return $this->stripSpaces($this->formatter->getSitemapEnd());
     }
 
-    public function formatUrl(Entity\Url $url): string
+    public function formatUrl(Element\Child\Url $url): string
     {
         return $this->stripSpaces($this->formatter->formatUrl($url));
     }
@@ -48,7 +48,7 @@ final class Spaceless implements IndexFormatterInterface
         return $this->stripSpaces($this->formatter->getSitemapIndexEnd());
     }
 
-    public function formatSitemapIndex(Entity\SitemapIndexEntry $entry): string
+    public function formatSitemapIndex(Element\SitemapIndex $entry): string
     {
         if (!$this->formatter instanceof IndexFormatterInterface) {
             return '';

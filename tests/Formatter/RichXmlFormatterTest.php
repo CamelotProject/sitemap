@@ -2,8 +2,8 @@
 
 namespace Camelot\Sitemap\Tests\Formatter;
 
-use Camelot\Sitemap\Entity\ChangeFrequency;
-use Camelot\Sitemap\Entity\RichUrl;
+use Camelot\Sitemap\Element\Child\AlternateUrl;
+use Camelot\Sitemap\Element\Child\ChangeFrequency;
 use Camelot\Sitemap\Formatter;
 
 class RichXmlFormatterTest extends XmlFormatterTest
@@ -18,9 +18,9 @@ class RichXmlFormatterTest extends XmlFormatterTest
         $this->assertSame('<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . "\n", $this->formatter->getSitemapStart());
     }
 
-    public function testFormatRichUrl(): void
+    public function testFormatAlternateUrl(): void
     {
-        $url = new RichUrl('http://www.google.fr');
+        $url = new AlternateUrl('http://www.google.fr');
         $url->setPriority(0.2);
         $url->setChangeFreq(ChangeFrequency::NEVER);
         $url->addAlternateUrl('en', 'http://www.google.com');

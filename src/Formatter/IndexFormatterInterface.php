@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Formatter;
 
-use Camelot\Sitemap\Entity;
+use Camelot\Sitemap\Element;
 
 interface IndexFormatterInterface extends FormatterInterface
 {
@@ -12,5 +12,5 @@ interface IndexFormatterInterface extends FormatterInterface
 
     public function getSitemapIndexEnd(): string;
 
-    public function formatSitemapIndex(Entity\SitemapIndexEntry $entry): string;
+    public function formatSitemapIndex(Element\SitemapIndex $entry): string;
 }

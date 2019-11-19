@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Provider;
 
-use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Element\Child\Url;
 use Camelot\Sitemap\Routing\UrlGeneratorInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 

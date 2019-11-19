@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Camelot\Sitemap\Entity;
+namespace Camelot\Sitemap\Element\Child;
 
 /**
  * Represents an image in a sitemap entry.

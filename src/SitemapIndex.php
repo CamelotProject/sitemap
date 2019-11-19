@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Camelot\Sitemap;
 
 use Camelot\Sitemap\Dumper\FileDumperInterface;
-use Camelot\Sitemap\Entity\SitemapIndexEntry;
+use Camelot\Sitemap\Element;
 use Camelot\Sitemap\Formatter\IndexFormatterInterface;
 use iter;
 
@@ -74,9 +74,9 @@ final class SitemapIndex
         $this->dumper->dump($this->formatter->getSitemapIndexEnd());
     }
 
-    private function createIndexEntry(string $sitemapFilename): SitemapIndexEntry
+    private function createIndexEntry(string $sitemapFilename): Element\SitemapIndex
     {
-        return new SitemapIndexEntry($this->baseHostSitemap .'/'.basename($sitemapFilename), new \DateTimeImmutable());
+        return new Element\SitemapIndex($this->baseHostSitemap .'/'.basename($sitemapFilename));
     }
 
     private function getSitemapIndexFilename(string $filename, int $index): string

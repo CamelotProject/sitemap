@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Formatter;
 
-use Camelot\Sitemap\Entity\RichUrl;
-use Camelot\Sitemap\Entity\Url;
+use Camelot\Sitemap\Element\Child\AlternateUrl;
+use Camelot\Sitemap\Element\Child\Url;
 
 final class RichXml extends Xml
 {
@@ -22,7 +22,7 @@ final class RichXml extends Xml
     {
         $buffer = parent::formatBody($url);
 
-        if (!$url instanceof RichUrl) {
+        if (!$url instanceof AlternateUrl) {
             return $buffer;
         }
 
