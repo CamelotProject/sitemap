@@ -4,7 +4,7 @@ namespace Camelot\Sitemap\Tests;
 
 use Camelot\Sitemap\Dumper\FileDumperInterface;
 use Camelot\Sitemap\Element\Child\Url;
-use Camelot\Sitemap\Formatter\IndexFormatterInterface;
+use Camelot\Sitemap\Formatter\IndexGeneratorInterface;
 use Camelot\Sitemap\SitemapIndex;
 use PHPUnit\Framework\TestCase;
 
@@ -49,6 +49,6 @@ class SitemapIndexTest extends TestCase
 
     private function getFormatter()
     {
-        return $this->createMock(IndexFormatterInterface::class);
+        return $this->createMock(IndexGeneratorInterface::class);
     }
 }

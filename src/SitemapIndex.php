@@ -6,7 +6,7 @@ namespace Camelot\Sitemap;
 
 use Camelot\Sitemap\Dumper\FileDumperInterface;
 use Camelot\Sitemap\Element;
-use Camelot\Sitemap\Formatter\IndexFormatterInterface;
+use Camelot\Sitemap\Formatter\IndexGeneratorInterface;
 use iter;
 
 /**
@@ -34,7 +34,7 @@ final class SitemapIndex
      * @param string $baseHostSitemap The base URL for the sitemap.
      * @param int $limit The maximum number of URL for each sitemap.
      */
-    public function __construct(FileDumperInterface $dumper, IndexFormatterInterface $formatter, string $baseHostSitemap, int $limit = self::MAX_ENTRIES_PER_SITEMAP)
+    public function __construct(FileDumperInterface $dumper, IndexGeneratorInterface $formatter, string $baseHostSitemap, int $limit = self::MAX_ENTRIES_PER_SITEMAP)
     {
         $this->dumper = $dumper;
         $this->formatter = $formatter;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Camelot\Sitemap\Formatter;
+namespace Camelot\Sitemap\Generator;
 
 use Camelot\Sitemap\Element;
 
-interface FormatterInterface
+interface GeneratorInterface
 {
     public function getSitemapStart(): string;
 

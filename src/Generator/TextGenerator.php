@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Camelot\Sitemap\Formatter;
+namespace Camelot\Sitemap\Generator;
 
 use Camelot\Sitemap\Element\Child\Url;
 
@@ -12,7 +12,7 @@ use Camelot\Sitemap\Element\Child\Url;
  *
  * @see http://www.sitemaps.org/protocol.html#otherformats
  */
-final class Text implements FormatterInterface
+final class TextGenerator implements GeneratorInterface
 {
     public function getSitemapStart(): string
     {

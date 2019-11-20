@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Camelot\Sitemap\Formatter;
+namespace Camelot\Sitemap\Generator;
 
 use Camelot\Sitemap\Element;
+use Camelot\Sitemap\Formatter\IndexGeneratorInterface;
 
-class Xml implements IndexFormatterInterface
+class XmlGenerator implements IndexGeneratorInterface
 {
     public function getSitemapStart(): string
     {

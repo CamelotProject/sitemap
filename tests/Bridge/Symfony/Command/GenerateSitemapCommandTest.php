@@ -4,7 +4,7 @@ namespace Camelot\Sitemap\Tests\Bridge\Symfony\Command;
 
 use Camelot\Sitemap\Bridge\Symfony\Command\GenerateSitemapCommand;
 use Camelot\Sitemap\Dumper\Memory;
-use Camelot\Sitemap\Formatter\Text;
+use Camelot\Sitemap\Generator\TextGenerator;
 use Camelot\Sitemap\Sitemap;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -18,7 +18,7 @@ class GenerateSitemapCommandTest extends WebTestCase
         $kernel->boot();
 
         $application = new Application($kernel);
-        $application->add(new GenerateSitemapCommand(new Sitemap(new Memory(), new Text())));
+        $application->add(new GenerateSitemapCommand(new Sitemap(new Memory(), new TextGenerator())));
 
         $command = $application->find('sitemap:generate');
         $commandTester = new CommandTester($command);

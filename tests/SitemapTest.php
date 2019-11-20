@@ -29,7 +29,7 @@ class SitemapTest extends TestCase
     public function testRelativeUrlsAreKeptIntact(): void
     {
         $dumper = new Dumper\Memory();
-        $sitemap = new class($dumper, new Formatter\Text()) extends Sitemap {
+        $sitemap = new class($dumper, new \Camelot\Sitemap\Generator\TextGenerator()) extends Sitemap {
             public function testableAdd(Url $url): void
             {
                 $this->add($url, DefaultValues::none());
@@ -62,7 +62,7 @@ class SitemapTest extends TestCase
 
     public function testBuild(): void
     {
-        $sitemap = new Sitemap(new Dumper\Memory(), new Formatter\Text());
+        $sitemap = new Sitemap(new Dumper\Memory(), new \Camelot\Sitemap\Generator\TextGenerator());
         $sitemap->addProvider(new \ArrayIterator([new Url('http://www.google.fr/search')]));
 
         $this->assertSame('http://www.google.fr/search' . "\n", $sitemap->build());
@@ -75,6 +75,6 @@ class SitemapTest extends TestCase
 
     private function getFormatter()
     {
-        return $this->createMock(Formatter\FormatterInterface::class);
+        return $this->createMock(\Camelot\Sitemap\Generator\GeneratorInterface::class);
     }
 }

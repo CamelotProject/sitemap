@@ -1,28 +1,27 @@
 <?php
 
-namespace Camelot\Sitemap\Tests\Formatter;
+namespace Camelot\Sitemap\Tests\Generator;
 
 use Camelot\Sitemap\Element\Child\Url;
-use Camelot\Sitemap\Formatter;
 use PHPUnit\Framework\TestCase;
 
-class TextFormatterTest extends TestCase
+class TextGeneratorTest extends TestCase
 {
     public function testSitemapStart(): void
     {
-        $formatter = new Formatter\Text();
+        $formatter = new \Camelot\Sitemap\Generator\TextGenerator();
         $this->assertSame('', $formatter->getSitemapStart());
     }
 
     public function testSitemapEnd(): void
     {
-        $formatter = new Formatter\Text();
+        $formatter = new \Camelot\Sitemap\Generator\TextGenerator();
         $this->assertSame('', $formatter->getSitemapEnd());
     }
 
     public function testFormatUrl(): void
     {
-        $formatter = new Formatter\Text();
+        $formatter = new \Camelot\Sitemap\Generator\TextGenerator();
 
         $url = new Url('http://www.google.fr');
 

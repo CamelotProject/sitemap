@@ -1,6 +1,6 @@
 <?php
 
-namespace Camelot\Sitemap\Tests\Formatter;
+namespace Camelot\Sitemap\Tests\Generator;
 
 use Camelot\Sitemap\Element\Child\ChangeFrequency;
 use Camelot\Sitemap\Element\Child\Image;
@@ -10,24 +10,16 @@ use Camelot\Sitemap\Element\SitemapIndex;
 use Camelot\Sitemap\Formatter;
 use PHPUnit\Framework\TestCase;
 
-class TestableXml extends Formatter\Xml
-{
-    public function testFormatVideo(Video $video)
-    {
-        return $this->formatVideo($video);
-    }
-}
-
-class XmlFormatterTest extends TestCase
+class XmlGeneratorTest extends TestCase
 {
     /**
-     * @var Formatter\FormatterInterface
+     * @var \Camelot\Sitemap\Generator\GeneratorInterface
      */
     protected $formatter;
 
     protected function setUp(): void
     {
-        $this->formatter = new Formatter\Xml();
+        $this->formatter = new \Camelot\Sitemap\Generator\XmlGenerator();
     }
 
     public function testSitemapStart(): void
@@ -167,7 +159,7 @@ class XmlFormatterTest extends TestCase
 
     public function testFormatFullVideo(): void
     {
-        $formatter = new TestableXml();
+        $formatter = new \Camelot\Sitemap\Tests\Generator\TestableXml();
 
         $video = new Video('Grilling steaks for summer', 'Alkis shows you how to get perfectly done steaks every time', 'http://www.example.com/thumbs/123.jpg');
         $video->setContentLoc('http://www.example.com/video123.flv');

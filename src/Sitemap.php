@@ -6,7 +6,7 @@ namespace Camelot\Sitemap;
 
 use Camelot\Sitemap\Dumper\DumperInterface;
 use Camelot\Sitemap\Element\Child\Url;
-use Camelot\Sitemap\Formatter\FormatterInterface;
+use Camelot\Sitemap\Generator\GeneratorInterface;
 
 /**
  * Sitemap generator.
@@ -42,11 +42,11 @@ class Sitemap
     private $dumper;
 
     /**
-     * @var FormatterInterface
+     * @var GeneratorInterface
      */
     private $formatter;
 
-    public function __construct(DumperInterface $dumper, FormatterInterface $formatter)
+    public function __construct(DumperInterface $dumper, GeneratorInterface $formatter)
     {
         $this->dumper = $dumper;
         $this->formatter = $formatter;

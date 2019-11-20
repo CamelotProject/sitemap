@@ -52,6 +52,6 @@ use Camelot\Sitemap\Formatter;
 use Camelot\Sitemap\SitemapIndex;
 
 $dumper = new Dumper\File('sitemap-index.xml');
-$formatter = new Formatter\RichXml();
+$formatter = new Formatter\RichXmlGenerator();
 $sitemap = new SitemapIndex($dumper, $formatter, $base_host = 'http://www.website.com');
 ```

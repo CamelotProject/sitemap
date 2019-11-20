@@ -12,7 +12,7 @@ use Camelot\Sitemap\Formatter;
 use Camelot\Sitemap\Sitemap;
 
 $dumper = new Dumper\Memory();
-$formatter = new Formatter\Xml();
+$formatter = new \Camelot\Sitemap\Generator\XmlGenerator();
 $sitemap = new Sitemap($dumper, $formatter);
 ```
 
@@ -115,7 +115,7 @@ class DummyProvider implements \IteratorAggregate
     }
 }
 
-$sitemap = new Sitemap(new Dumper\Memory(), new Formatter\Xml());
+$sitemap = new Sitemap(new Dumper\Memory(), new \Camelot\Sitemap\Generator\XmlGenerator());
 $sitemap->addProvider(new DummyProvider());
 
 echo $sitemap->build();
