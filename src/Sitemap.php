@@ -7,7 +7,6 @@ namespace Camelot\Sitemap;
 use Camelot\Sitemap\Dumper\DumperInterface;
 use Camelot\Sitemap\Element\Child\Url;
 use Camelot\Sitemap\Formatter\FormatterInterface;
-use Camelot\Sitemap\Provider\DefaultValues;
 
 /**
  * Sitemap generator.
@@ -21,6 +20,9 @@ use Camelot\Sitemap\Provider\DefaultValues;
  */
 class Sitemap
 {
+    public const XML = 'xml';
+    public const TXT = 'txt';
+
     public const CHANGE_FREQ_ALWAYS = 'always';
     public const CHANGE_FREQ_HOURLY = 'hourly';
     public const CHANGE_FREQ_DAILY = 'daily';

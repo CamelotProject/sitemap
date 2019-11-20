@@ -2,11 +2,11 @@
 
 namespace Camelot\Sitemap\Tests;
 
+use Camelot\Sitemap\DefaultValues;
 use Camelot\Sitemap\Dumper;
 use Camelot\Sitemap\Element\Child\ChangeFrequency;
 use Camelot\Sitemap\Element\Child\Url;
 use Camelot\Sitemap\Formatter;
-use Camelot\Sitemap\Provider\DefaultValues;
 use Camelot\Sitemap\Sitemap;
 use PHPUnit\Framework\TestCase;
 

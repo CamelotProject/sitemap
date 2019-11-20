@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Provider;
 
+use Camelot\Sitemap\DefaultValues;
 use Camelot\Sitemap\Element;
 use Camelot\Sitemap\Routing\UrlGeneratorInterface;
 
