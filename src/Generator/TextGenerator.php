@@ -4,28 +4,27 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Generator;
 
-use Camelot\Sitemap\Element\Child\Url;
+use Camelot\Sitemap\Element\RootElementInterface;
+use Camelot\Sitemap\Element\SitemapIndex;
+use Camelot\Sitemap\Element\UrlSet;
+use Camelot\Sitemap\Exception\GeneratorException;
+use Camelot\Sitemap\Serializer\Text\SitemapIndexSerializer;
+use Camelot\Sitemap\Serializer\Text\UrlSetSerializer;
+use Camelot\Sitemap\Target\TargetInterface;
+use function get_class;
+use function sprintf;
 
-/**
- * Sitemaps formatted using this class will contain only one URL per line and
- * no other information.
- *
- * @see http://www.sitemaps.org/protocol.html#otherformats
- */
 final class TextGenerator implements GeneratorInterface
 {
-    public function getSitemapStart(): string
+    public function generate(RootElementInterface $data, TargetInterface $target): void
     {
-        return '';
-    }
-
-    public function getSitemapEnd(): string
-    {
-        return '';
-    }
-
-    public function formatUrl(Url $url): string
-    {
-        return $url->getLoc() . "\n";
+        if ($data instanceof UrlSet) {
+            $serializer = new UrlSetSerializer();
+        } elseif ($data instanceof SitemapIndex) {
+            $serializer = new SitemapIndexSerializer();
+        } else {
+            throw new GeneratorException(sprintf('Unknown %s object, %s & %s supported, %s given.', RootElementInterface::class, UrlSet::class, SitemapIndex::class, get_class($data))); // @codeCoverageIgnore
+        }
+        $target->write($serializer->serialize($data));
     }
 }

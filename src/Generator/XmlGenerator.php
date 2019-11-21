@@ -4,201 +4,144 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap\Generator;
 
-use Camelot\Sitemap\Element;
-use Camelot\Sitemap\Formatter\IndexGeneratorInterface;
+use Camelot\Sitemap\Element\Child;
+use Camelot\Sitemap\Element\RootElementInterface;
+use Camelot\Sitemap\Element\SitemapIndex;
+use Camelot\Sitemap\Element\UrlSet;
+use Camelot\Sitemap\Exception\GeneratorException;
+use Camelot\Sitemap\Serializer\Xml\ImageSerializer;
+use Camelot\Sitemap\Serializer\Xml\SitemapIndexSerializer;
+use Camelot\Sitemap\Serializer\Xml\SitemapSerializer;
+use Camelot\Sitemap\Serializer\Xml\UrlSerializer;
+use Camelot\Sitemap\Serializer\Xml\UrlSetSerializer;
+use Camelot\Sitemap\Serializer\Xml\VideoContentSegmentLocationSerializer;
+use Camelot\Sitemap\Serializer\Xml\VideoGalleryLocationSerializer;
+use Camelot\Sitemap\Serializer\Xml\VideoIdSerializer;
+use Camelot\Sitemap\Serializer\Xml\VideoPlatformSerializer;
+use Camelot\Sitemap\Serializer\Xml\VideoPlayerLocationSerializer;
+use Camelot\Sitemap\Serializer\Xml\VideoPriceSerializer;
+use Camelot\Sitemap\Serializer\Xml\VideoRestrictionSerializer;
+use Camelot\Sitemap\Serializer\Xml\VideoSerializer;
+use Camelot\Sitemap\Serializer\Xml\VideoTvShowSerializer;
+use Camelot\Sitemap\Serializer\Xml\VideoUploaderSerializer;
+use Camelot\Sitemap\Sitemap;
+use Camelot\Sitemap\Target\TargetInterface;
+use Sabre\Xml\Writer;
+use function get_class;
+use function sprintf;
 
-class XmlGenerator implements IndexGeneratorInterface
+final class XmlGenerator implements GeneratorInterface
 {
-    public function getSitemapStart(): string
+    private array $namespaceMap = [];
+    private array $classMap = [];
+    private array $valueObjectMap = [];
+
+    public function generate(RootElementInterface $data, TargetInterface $target): void
     {
-        return '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<urlset ' .
-               'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" ' .
-               'xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" ' .
-               'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . "\n";
+        if ($data instanceof UrlSet) {
+            $rootElementName = Sitemap::XML_CLARK_NS . 'urlset';
+            $xmlNs = $this->configureUrlSet();
+        } elseif ($data instanceof SitemapIndex) {
+            $rootElementName = Sitemap::XML_CLARK_NS . 'sitemapindex';
+            $xmlNs = $this->configureSitemapIndex();
+        } else {
+            throw new GeneratorException(sprintf('Unknown %s object, %s & %s supported, %s given.', RootElementInterface::class, UrlSet::class, SitemapIndex::class, get_class($data)));
+        }
+        $output = $this->doGenerate($rootElementName, $data, $xmlNs);
+        $target->write($output);
     }
 
-    public function getSitemapEnd(): string
+    /**
+     * Writes a value object that must be previously registered using mapValueObject().
+     *
+     * @throws GeneratorException
+     */
+    private function doGenerate(string $rootElementName, RootElementInterface $element, string $contextUri = null): string
     {
-        return '</urlset>';
+        $w = new Writer();
+        $w->namespaceMap = $this->namespaceMap;
+        $w->classMap = $this->classMap;
+
+        $w->openMemory();
+        $w->contextUri = $contextUri;
+        $w->setIndent(true);
+        $w->startDocument();
+        $w->writeElement($rootElementName, $element);
+
+        return $w->outputMemory();
     }
 
-    public function getSitemapIndexStart(): string
+    private function configureSitemapIndex(): string
     {
-        return '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+        $this->configure()
+            ->addObjectMap(Sitemap::XML_CLARK_NS . 'site', Child\Sitemap::class)
+            ->addObjectMap(Sitemap::XML_CLARK_NS . 'sitemapindex', SitemapIndex::class)
+
+            ->addClassMap(SitemapIndex::class, [SitemapIndexSerializer::class, 'serialize'])
+            ->addClassMap(Child\Sitemap::class, [SitemapSerializer::class, 'serialize'])
+        ;
+
+        return Sitemap::XML_CLARK_NS . 'sitemapindex';
     }
 
-    public function getSitemapIndexEnd(): string
+    private function configureUrlSet(): string
     {
-        return '</sitemapindex>';
+        $this->configure()
+            ->addNamespaceMap(Sitemap::XHTML_NS, 'xhtml')
+            ->addNamespaceMap(Sitemap::IMAGE_XML_NS, 'image')
+            ->addNamespaceMap(Sitemap::VIDEO_XML_NS, 'video')
+        ;
+
+        return Sitemap::XML_CLARK_NS . 'urlset';
     }
 
-    public function formatUrl(Element\Child\Url $url): string
+    private function configure(): self
     {
-        return '<url>' . "\n" . $this->formatBody($url) . '</url>' . "\n";
+        $this->namespaceMap = [];
+        $this->classMap = [];
+        $this->valueObjectMap = [];
+        $this
+            ->addNamespaceMap(Sitemap::XML_NS, '')
+
+            ->addObjectMap(Sitemap::XML_CLARK_NS . 'urlset', UrlSet::class)
+            ->addObjectMap(Sitemap::XML_CLARK_NS . 'url', Child\Url::class)
+
+            ->addClassMap(UrlSet::class, [UrlSetSerializer::class, 'serialize'])
+            ->addClassMap(Child\Url::class, [UrlSerializer::class, 'serialize'])
+            ->addClassMap(Child\Image::class, [ImageSerializer::class, 'serialize'])
+            ->addClassMap(Child\Video::class, [VideoSerializer::class, 'serialize'])
+            ->addClassMap(Child\VideoContentSegmentLocation::class, [VideoContentSegmentLocationSerializer::class, 'serialize'])
+            ->addClassMap(Child\VideoGalleryLocation::class, [VideoGalleryLocationSerializer::class, 'serialize'])
+            ->addClassMap(Child\VideoId::class, [VideoIdSerializer::class, 'serialize'])
+            ->addClassMap(Child\VideoPlatform::class, [VideoPlatformSerializer::class, 'serialize'])
+            ->addClassMap(Child\VideoPlayerLocation::class, [VideoPlayerLocationSerializer::class, 'serialize'])
+            ->addClassMap(Child\VideoPrice::class, [VideoPriceSerializer::class, 'serialize'])
+            ->addClassMap(Child\VideoRestriction::class, [VideoRestrictionSerializer::class, 'serialize'])
+            ->addClassMap(Child\VideoTvShow::class, [VideoTvShowSerializer::class, 'serialize'])
+            ->addClassMap(Child\VideoUploader::class, [VideoUploaderSerializer::class, 'serialize'])
+        ;
+
+        return $this;
     }
 
-    protected function formatBody(Element\Child\Url $url): string
+    private function addNamespaceMap(string $namespace, string $alias): self
     {
-        $buffer = "\t" . '<loc>' . $this->escape($url->getLoc()) . '</loc>' . "\n";
+        $this->namespaceMap[$namespace] = $alias;
 
-        if ($url->getLastModified() !== null) {
-            $buffer .= "\t" . '<lastmod>' . $this->escape($url->getLastModified()) . '</lastmod>' . "\n";
-        }
-
-        if ($url->getChangeFrequency() !== null) {
-            $buffer .= "\t" . '<changefreq>' . $this->escape($url->getChangeFrequency()) . '</changefreq>' . "\n";
-        }
-
-        if ($url->getPriority() !== null) {
-            $buffer .= "\t" . '<priority>' . $url->getPriority() . '</priority>' . "\n";
-        }
-
-        foreach ($url->getVideos() as $video) {
-            $buffer .= $this->formatVideo($video);
-        }
-
-        foreach ($url->getImages() as $image) {
-            $buffer .= $this->formatImage($image);
-        }
-
-        return $buffer;
+        return $this;
     }
 
-    public function formatSitemapIndex(Element\SitemapIndex $entry): string
+    private function addClassMap(string $className, callable $serializer): self
     {
-        return '<sitemap>' . "\n" . $this->formatSitemapIndexBody($entry) . '</sitemap>' . "\n";
+        $this->classMap[$className] = $serializer;
+
+        return $this;
     }
 
-    protected function formatSitemapIndexBody(Element\SitemapIndex $entry): string
+    private function addObjectMap(string $elementName, string $className): self
     {
-        $buffer = "\t" . '<loc>' . $this->escape($entry->getLocation()) . '</loc>' . "\n";
+        $this->valueObjectMap[$className] = $elementName;
 
-        if ($entry->getLastModified() !== null) {
-            $buffer .= "\t" . '<lastmod>' . $this->escape($entry->getLastModified()) . '</lastmod>' . "\n";
-        }
-
-        return $buffer;
-    }
-
-    protected function formatVideo(Element\Child\Video $video): string
-    {
-        $buffer = "\t" . '<video:video>' . "\n";
-
-        $buffer .= "\t\t" . '<video:title>' . $this->escape($video->getTitle()) . '</video:title>' . "\n";
-        $buffer .= "\t\t" . '<video:description>' . $this->escape($video->getDescription()) . '</video:description>' . "\n";
-        $buffer .= "\t\t" . '<video:thumbnail_loc>' . $this->escape($video->getThumbnailLoc()) . '</video:thumbnail_loc>' . "\n";
-
-        if ($video->getContentLoc() !== null) {
-            $buffer .= "\t\t" . '<video:content_loc>' . $this->escape($video->getContentLoc()) . '</video:content_loc>' . "\n";
-        }
-
-        if ($video->getPlayerLoc() !== null) {
-            $playerLoc = $video->getPlayerLoc();
-            $allowEmbed = $playerLoc['allow_embed'] ? 'yes' : 'no';
-            $autoplay = $playerLoc['autoplay'] !== null ? sprintf(' autoplay="%s"', $this->escape($playerLoc['autoplay'])) : '';
-
-            $buffer .= "\t\t" . sprintf('<video:player_loc allow_embed="%s"%s>', $allowEmbed, $autoplay) . $this->escape($playerLoc['loc']) . '</video:player_loc>' . "\n";
-        }
-
-        if ($video->getDuration() !== null) {
-            $buffer .= "\t\t" . '<video:duration>' . $video->getDuration() . '</video:duration>' . "\n";
-        }
-
-        if ($video->getExpirationDate() !== null) {
-            $buffer .= "\t\t" . '<video:expiration_date>' . $this->escape($video->getExpirationDate()) . '</video:expiration_date>' . "\n";
-        }
-
-        if ($video->getRating() !== null) {
-            $buffer .= "\t\t" . '<video:rating>' . $video->getRating() . '</video:rating>' . "\n";
-        }
-
-        if ($video->getViewCount() !== null) {
-            $buffer .= "\t\t" . '<video:view_count>' . $video->getViewCount() . '</video:view_count>' . "\n";
-        }
-
-        if ($video->getPublicationDate() !== null) {
-            $buffer .= "\t\t" . '<video:publication_date>' . $this->escape($video->getPublicationDate()) . '</video:publication_date>' . "\n";
-        }
-
-        if ($video->isFamilyFriendly() === false) {
-            $buffer .= "\t\t" . '<video:family_friendly>no</video:family_friendly>' . "\n";
-        }
-
-        if ($video->getTags() !== null) {
-            foreach ($video->getTags() as $tag) {
-                $buffer .= "\t\t" . '<video:tag>' . $this->escape($tag) . '</video:tag>' . "\n";
-            }
-        }
-
-        if ($video->getCategory() !== null) {
-            $buffer .= "\t\t" . '<video:category>' . $this->escape($video->getCategory()) . '</video:category>' . "\n";
-        }
-
-        if ($video->getRestriction() !== null) {
-            $restrictions = $video->getRestriction();
-            $relationship = $this->escape($restrictions['relationship']);
-
-            $buffer .= "\t\t" . '<video:restriction relationship="' . $relationship . '">' . $this->escape(implode(' ', $restrictions['countries'])) . '</video:restriction>' . "\n";
-        }
-
-        if ($video->getGalleryLoc() !== null) {
-            $galleryLoc = $video->getGalleryLoc();
-            $title = $galleryLoc['title'] !== null ? sprintf(' title="%s"', $this->escape($galleryLoc['title'])) : '';
-
-            $buffer .= "\t\t" . sprintf('<video:gallery_loc%s>', $title) . $this->escape($galleryLoc['loc']) . '</video:gallery_loc>' . "\n";
-        }
-
-        if ($video->isRequiresSubscription()) {
-            $buffer .= "\t\t" . '<video:requires_subscription>' . ($video->isRequiresSubscription() ? 'yes' : 'no') . '</video:requires_subscription>' . "\n";
-        }
-
-        if ($video->getUploader() !== null) {
-            $uploader = $video->getUploader();
-            $info = $uploader['info'] !== null ? sprintf(' info="%s"', $this->escape($uploader['info'])) : '';
-
-            $buffer .= "\t\t" . sprintf('<video:uploader%s>', $info) . $this->escape($uploader['name']) . '</video:uploader>' . "\n";
-        }
-
-        if ($video->getPlatform() !== null) {
-            foreach ($video->getPlatform() as $platform => $relationship) {
-                $buffer .= "\t\t" . '<video:platform relationship="' . $this->escape($relationship) . '">' . $this->escape($platform) . '</video:platform>' . "\n";
-            }
-        }
-
-        if ($video->isLive() !== null) {
-            $buffer .= "\t\t" . '<video:live>' . ($video->isLive() ? 'yes' : 'no') . '</video:live>' . "\n";
-        }
-
-        return $buffer . "\t" . '</video:video>' . "\n";
-    }
-
-    protected function formatImage(Element\Child\Image $image): string
-    {
-        $buffer = "\t" . '<image:image>' . "\n";
-
-        $buffer .= "\t\t" . '<image:loc>' . $this->escape($image->getLoc()) . '</image:loc>' . "\n";
-
-        if ($image->getCaption() !== null) {
-            $buffer .= "\t\t" . '<image:caption>' . $this->escape($image->getCaption()) . '</image:caption>' . "\n";
-        }
-
-        if ($image->getGeoLocation() !== null) {
-            $buffer .= "\t\t" . '<image:geo_location>' . $this->escape($image->getGeoLocation()) . '</image:geo_location>' . "\n";
-        }
-
-        if ($image->getTitle() !== null) {
-            $buffer .= "\t\t" . '<image:title>' . $this->escape($image->getTitle()) . '</image:title>' . "\n";
-        }
-
-        if ($image->getLicense() !== null) {
-            $buffer .= "\t\t" . '<image:license>' . $this->escape($image->getLicense()) . '</image:license>' . "\n";
-        }
-
-        return $buffer . "\t" . '</image:image>' . "\n";
-    }
-
-    protected function escape($string): string
-    {
-        return htmlspecialchars($string, ENT_QUOTES);
+        return $this;
     }
 }

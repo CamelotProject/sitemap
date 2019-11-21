@@ -31,6 +31,15 @@ class Sitemap
     public const CHANGE_FREQ_YEARLY = 'yearly';
     public const CHANGE_FREQ_NEVER = 'never';
 
+    public const XML_NS = 'http://www.sitemaps.org/schemas/sitemap/0.9';
+    public const XML_CLARK_NS = '{http://www.sitemaps.org/schemas/sitemap/0.9}';
+    public const XHTML_NS = 'http://www.w3.org/1999/xhtml';
+    public const XHTML_CLARK_NS = '{http://www.w3.org/1999/xhtml}';
+    public const IMAGE_XML_NS = 'http://www.google.com/schemas/sitemap-image/1.1';
+    public const IMAGE_XML_CLARK_NS = '{http://www.google.com/schemas/sitemap-image/1.1}';
+    public const VIDEO_XML_NS = 'http://www.google.com/schemas/sitemap-video/1.1';
+    public const VIDEO_XML_CLARK_NS = '{http://www.google.com/schemas/sitemap-video/1.1}';
+
     /**
      * @var \SplObjectStorage
      */

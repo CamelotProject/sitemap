@@ -19,8 +19,11 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.1",
+        "ext-dom": "*",
+        "ext-libxml": "*",
         "camelot/thrower": "^1.0",
         "nikic/iter": "^2.0",
+        "sabre/xml": "^2.1",
         "symfony/property-access": "^4.3 || ^5.0"
     },
     "require-dev": {
