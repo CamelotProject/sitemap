@@ -29,6 +29,8 @@
     },
     "require-dev": {
         "camelot/coding-style": "^2.0",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "doctrine/orm": "^2.6",
         "friendsofphp/php-cs-fixer": "^2.16.1",
         "phpunit/phpunit": "^8.4",
         "symfony/browser-kit": "^4.3 || ^5.0",
