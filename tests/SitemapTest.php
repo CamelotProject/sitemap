@@ -1,80 +1,191 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Camelot\Sitemap\Tests;
 
-use Camelot\Sitemap\DefaultValues;
-use Camelot\Sitemap\Dumper;
-use Camelot\Sitemap\Element\Child\ChangeFrequency;
-use Camelot\Sitemap\Element\Child\Url;
-use Camelot\Sitemap\Formatter;
+use Camelot\Sitemap\Config;
+use Camelot\Sitemap\Exception\ValidationException;
 use Camelot\Sitemap\Sitemap;
+use Camelot\Sitemap\Target\StreamFactory;
+use Camelot\Sitemap\Tests\Fixtures\Provider\FunctionalTestProvider;
+use Camelot\Sitemap\Validation\XmlSchemaValidator;
 use PHPUnit\Framework\TestCase;
+use function file_get_contents;
+use function rtrim;
+use function substr;
+use const PHP_EOL;
 
-class SitemapTest extends TestCase
+/**
+ * @covers \Camelot\Sitemap\Sitemap
+ *
+ * @internal
+ */
+final class SitemapTest extends TestCase
 {
-    public function testAddProvider(): void
-    {
-        $sitemap = new class($this->getDumper(), $this->getFormatter()) extends Sitemap {
-            public function getProviders()
-            {
-                return $this->providers;
-            }
-        };
-        $this->assertCount(0, $sitemap->getProviders());
+    private const IS_INDEXED = true;
+    private const IS_COMPRESSED = true;
+    private const NOT_INDEXED = false;
+    private const NOT_COMPRESSED = false;
 
-        $sitemap->addProvider(new \ArrayIterator([]));
-        $this->assertCount(1, $sitemap->getProviders());
+    protected function setUp(): void
+    {
+        TestCaseFilesystem::cleanup();
     }
 
-    public function testRelativeUrlsAreKeptIntact(): void
+    protected function tearDown(): void
     {
-        $dumper = new Dumper\Memory();
-        $sitemap = new class($dumper, new \Camelot\Sitemap\Generator\TextGenerator()) extends Sitemap {
-            public function testableAdd(Url $url): void
-            {
-                $this->add($url, DefaultValues::none());
-            }
-        };
-        $url = new Url('/search');
-
-        $sitemap->testableAdd($url);
-
-        $this->assertSame('/search', $url->getLoc());
-        $this->assertSame('/search' . "\n", $dumper->getBuffer());
+        TestCaseFilesystem::cleanup();
     }
 
-    public function testAddWithDefaultValues(): void
+    public function testGenerateXml(): void
     {
-        $formatter = $this->getFormatter();
-        $sitemap = new Sitemap($this->getDumper(), $formatter);
-        $defaultValues = DefaultValues::create(0.7, ChangeFrequency::ALWAYS);
+        $config = new Config('https://sitemap.test', TestCaseFilesystem::temp(), null, Sitemap::XML, self::NOT_COMPRESSED, self::NOT_INDEXED, 50000);
+        $this->runGenerate($config);
 
-        $formatter
-            ->expects($this->once())
-            ->method('formatUrl')
-            ->with($this->callback(function(Url $url) {
-                return $url->getPriority() === 0.7 && $url->getChangeFrequency() === ChangeFrequency::ALWAYS;
-            }));
-
-        $sitemap->addProvider(new \ArrayIterator([new Url('http://www.google.fr/search')]), $defaultValues);
-        $sitemap->build();
+        static::assertXmlFileEqualsXmlFile(TestCaseFilesystem::expectation('sitemap.xml'), $config->getFilePath());
+        static::assertXmlMatchesXsd(file_get_contents($config->getFilePath()));
     }
 
-    public function testBuild(): void
+    public function testGenerateIndexXml(): void
     {
-        $sitemap = new Sitemap(new Dumper\Memory(), new \Camelot\Sitemap\Generator\TextGenerator());
-        $sitemap->addProvider(new \ArrayIterator([new Url('http://www.google.fr/search')]));
+        $config = new Config('https://sitemap.test', TestCaseFilesystem::temp(), null, Sitemap::XML, self::NOT_COMPRESSED, self::IS_INDEXED, 2);
+        $this->runGenerate($config);
 
-        $this->assertSame('http://www.google.fr/search' . "\n", $sitemap->build());
+        static::assertXmlFileEqualsXmlFile(TestCaseFilesystem::expectation('indexed/sitemap.xml'), $config->getFilePath());
+        static::assertXmlMatchesXsd(file_get_contents($config->getFilePath()));
+        foreach (['1', '2', '3', '4'] as $index) {
+            $baseName = rtrim($config->getFileName($index), '.gz');
+            $expectedFile = TestCaseFilesystem::expectation('indexed/' . $baseName);
+            $resultFile = $config->getFilePath($index);
+
+            static::assertXmlFileEqualsXmlFile($expectedFile, $resultFile);
+            static::assertXmlMatchesXsd(file_get_contents($resultFile));
+        }
     }
 
-    private function getDumper()
+    public function testGenerateXmlGz(): void
     {
-        return $this->createMock(Dumper\DumperInterface::class);
+        $config = new Config('https://sitemap.test', TestCaseFilesystem::temp(), null, Sitemap::XML, self::IS_COMPRESSED, self::NOT_INDEXED, 50000);
+        $this->runGenerate($config);
+
+        self::assertFileIsGzip($config->getFilePath());
+
+        $factory = new StreamFactory();
+        $expectedClean = rtrim('sitemap.xml', '.gz');
+        $expected = $factory->createFileGz(TestCaseFilesystem::expectation($expectedClean), 'r')->read();
+        $result = $factory->createFileGz($config->getFilePath(), 'r')->read();
+
+        static::assertXmlStringEqualsXmlString($expected, $result);
+        static::assertXmlMatchesXsd($result);
     }
 
-    private function getFormatter()
+    public function testGenerateIndexXmlGz(): void
     {
-        return $this->createMock(\Camelot\Sitemap\Generator\GeneratorInterface::class);
+        $config = new Config('https://sitemap.test', TestCaseFilesystem::temp(), null, Sitemap::XML, self::IS_COMPRESSED, self::IS_INDEXED, 2);
+        $this->runGenerate($config);
+
+        self::assertFileIsGzip($config->getFilePath());
+
+        $factory = new StreamFactory();
+        $expected = $factory->createFileGz(TestCaseFilesystem::expectation('indexed/sitemap-gz.xml'), 'r')->read();
+        $result = $factory->createFileGz($config->getFilePath(), 'r')->read();
+
+        static::assertXmlStringEqualsXmlString($expected, $result);
+        static::assertXmlMatchesXsd($result);
+
+        foreach (['1', '2', '3', '4'] as $index) {
+            $expectedPath = TestCaseFilesystem::expectation("indexed/sitemap-{$index}.xml");
+            $resultPath = $config->getFilePath($index);
+
+            self::assertFileIsGzip($resultPath);
+
+            $expected = $factory->createFileGz($expectedPath, 'r')->read();
+            $result = $factory->createFileGz($resultPath, 'r')->read();
+
+            static::assertXmlStringEqualsXmlString($expected, $result);
+            static::assertXmlMatchesXsd($result);
+        }
+    }
+
+    public function testGenerateText(): void
+    {
+        $config = new Config('https://sitemap.test', TestCaseFilesystem::temp(), null, Sitemap::TXT, self::NOT_COMPRESSED, self::NOT_INDEXED, 50000);
+        $this->runGenerate($config);
+
+        static::assertFileEquals(TestCaseFilesystem::expectation('sitemap.txt'), $config->getFilePath());
+    }
+
+    public function testGenerateIndexedText(): void
+    {
+        $config = new Config('https://sitemap.test', TestCaseFilesystem::temp(), null, Sitemap::TXT, self::NOT_COMPRESSED, self::IS_INDEXED, 2);
+        $this->runGenerate($config);
+
+        static::assertFileEquals(TestCaseFilesystem::expectation('indexed/sitemap.txt'), $config->getFilePath());
+    }
+
+    public function testGenerateTextGz(): void
+    {
+        $config = new Config('https://sitemap.test', TestCaseFilesystem::temp(), null, Sitemap::TXT, self::IS_COMPRESSED, self::NOT_INDEXED, 50000);
+        $this->runGenerate($config);
+
+        self::assertFileIsGzip($config->getFilePath());
+
+        $factory = new StreamFactory();
+        $expected = $factory->createFileGz(TestCaseFilesystem::expectation('sitemap.txt'), 'r')->read();
+        $result = $factory->createFileGz($config->getFilePath(), 'r')->read();
+
+        static::assertSame($expected, $result);
+    }
+
+    public function testGenerateIndexTextGz(): void
+    {
+        $config = new Config('https://sitemap.test', TestCaseFilesystem::temp(), null, Sitemap::TXT, self::IS_COMPRESSED, self::IS_INDEXED, 2);
+        $this->runGenerate($config);
+
+        self::assertFileIsGzip($config->getFilePath());
+
+        $factory = new StreamFactory();
+        $expected = $factory->createFileGz(TestCaseFilesystem::expectation('indexed/sitemap-gz.txt'), 'r')->read();
+        $result = $factory->createFileGz($config->getFilePath(), 'r')->read();
+
+        static::assertSame($expected, $result);
+
+        foreach (['1', '2', '3', '4'] as $index) {
+            $expectedPath = TestCaseFilesystem::expectation("indexed/sitemap-{$index}.txt");
+            $resultPath = $config->getFilePath($index);
+
+            self::assertFileIsGzip($resultPath);
+
+            $expected = $factory->createFileGz($expectedPath, 'r')->read();
+            $result = $factory->createFileGz($resultPath, 'r')->read();
+            static::assertSame($expected, $result);
+        }
+    }
+
+    private function runGenerate(Config $config): void
+    {
+        $providers = new FunctionalTestProvider();
+        $sitemap = new Sitemap();
+        $sitemap->generate($providers, $config);
+    }
+
+    private static function assertFileIsGzip(string $filePath): void
+    {
+        $result = file_get_contents($filePath);
+        if (mb_strpos($result, "\x1f" . "\x8b" . "\x08", 0, 'US-ASCII') !== 0) {
+            static::fail('Generated file was not GZIP encoded!' . PHP_EOL . 'Header:' . PHP_EOL . substr($result, 0, 64) . ' ...');
+        }
+        static::assertTrue(true);
+    }
+
+    private static function assertXmlMatchesXsd(string $expected): void
+    {
+        try {
+            XmlSchemaValidator::validate($expected);
+            static::assertTrue(true);
+        } catch (ValidationException $e) {
+            static::fail('Generated XML failed validation: ' . $e->getMessage());
+        }
     }
 }

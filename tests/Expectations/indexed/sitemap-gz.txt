@@ -1,0 +1,4 @@
+https://sitemap.test/sitemap-1.txt.gz
+https://sitemap.test/sitemap-2.txt.gz
+https://sitemap.test/sitemap-3.txt.gz
+https://sitemap.test/sitemap-4.txt.gz

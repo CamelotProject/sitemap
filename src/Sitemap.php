@@ -4,21 +4,13 @@ declare(strict_types=1);
 
 namespace Camelot\Sitemap;
 
-use Camelot\Sitemap\Dumper\DumperInterface;
-use Camelot\Sitemap\Element\Child\Url;
-use Camelot\Sitemap\Generator\GeneratorInterface;
+use Camelot\Sitemap\Builder\Builder;
+use Camelot\Sitemap\Element\SitemapIndex;
+use Camelot\Sitemap\Generator\TextGenerator;
+use Camelot\Sitemap\Generator\XmlGenerator;
+use Camelot\Sitemap\Target\StreamFactory;
 
-/**
- * Sitemap generator.
- *
- * It will use a set of providers to build the sitemap.
- * The dumper takes care of the sitemap's persistence (file, compressed file,
- * memory) and the formatter formats it.
- *
- * The whole process tries to be as memory-efficient as possible, that's why URLs
- * are not stored but dumped immediately.
- */
-class Sitemap
+final class Sitemap
 {
     public const XML = 'xml';
     public const TXT = 'txt';
@@ -40,67 +32,31 @@ class Sitemap
     public const VIDEO_XML_NS = 'http://www.google.com/schemas/sitemap-video/1.1';
     public const VIDEO_XML_CLARK_NS = '{http://www.google.com/schemas/sitemap-video/1.1}';
 
-    /**
-     * @var \SplObjectStorage
-     */
-    protected $providers;
+    private StreamFactory $streamFactory;
 
-    /**
-     * @var DumperInterface
-     */
-    private $dumper;
-
-    /**
-     * @var GeneratorInterface
-     */
-    private $formatter;
-
-    public function __construct(DumperInterface $dumper, GeneratorInterface $formatter)
+    public function __construct()
     {
-        $this->dumper = $dumper;
-        $this->formatter = $formatter;
-
-        $this->providers = new \SplObjectStorage();
+        $this->streamFactory = new StreamFactory();
     }
 
-    /**
-     * @param \Traversable $provider A set of iterable Url objects.
-     * @param DefaultValues $defaultValues Default values that will be used for Url entries.
-     */
-    public function addProvider(\Traversable $provider, DefaultValues $defaultValues = null): void
+    public function generate(iterable $providers, Config $config): void
     {
-        $this->providers->attach($provider, $defaultValues ?: DefaultValues::none());
-    }
+        $targetPath = $config->getFilePath();
+        $target = $config->isCompress() ? $this->streamFactory->createFileGz($targetPath) : $this->streamFactory->createFile($targetPath);
+        $generator = $config->getFormat() === self::XML ? new XmlGenerator() : new TextGenerator();
+        $builder = new Builder($providers, $config);
 
-    /**
-     * @return string|null The sitemap's content if available.
-     */
-    public function build(): ?string
-    {
-        $this->dumper->dump($this->formatter->getSitemapStart());
-
-        foreach ($this->providers as $provider) {
-            /** @var DefaultValues $defaultValues */
-            $defaultValues = $this->providers[$provider];
-
-            foreach ($provider as $entry) {
-                $this->add($entry, $defaultValues);
-            }
+        $data = $builder->build();
+        $generator->generate($data, $target);
+        if (!$data instanceof SitemapIndex) {
+            return;
         }
 
-        return $this->dumper->dump($this->formatter->getSitemapEnd());
-    }
-
-    protected function add(Url $url, DefaultValues $defaultValues): void
-    {
-        if (!$url->getPriority() && $defaultValues->hasPriority()) {
-            $url->setPriority($defaultValues->getPriority());
+        $index = 0;
+        foreach ($data->getGrandChildren() as $urlSet) {
+            $targetPath = $config->getFilePath((string) ++$index);
+            $target = $config->isCompress() ? $this->streamFactory->createFileGz($targetPath) : $this->streamFactory->createFile($targetPath);
+            $generator->generate($urlSet, $target);
         }
-
-        if (!$url->getChangeFrequency() && $defaultValues->hasChangeFreq()) {
-            $url->setChangeFrequency($defaultValues->getChangeFrequency());
-        }
-
-        $this->dumper->dump($this->formatter->formatUrl($url));
     }
 }

@@ -1,0 +1,2 @@
+https://sitemap.test/uri/one
+https://sitemap.test/uri/two

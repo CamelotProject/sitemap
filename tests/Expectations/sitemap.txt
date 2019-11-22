@@ -1,0 +1,7 @@
+http://sitemap.test/articles
+http://github.com
+https://sitemap.test/uri/one
+https://sitemap.test/uri/two
+https://sitemap.test/uri/three
+https://sitemap.test/uri/four
+https://sitemap.test/uri/five

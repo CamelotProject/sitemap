@@ -1,0 +1,2 @@
+https://sitemap.test/uri/three
+https://sitemap.test/uri/four
