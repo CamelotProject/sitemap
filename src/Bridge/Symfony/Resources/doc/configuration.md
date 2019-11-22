@@ -12,28 +12,25 @@ empty.
 In order to support any kind of datasource, the sitemap uses providers to fetch
 the data.
 
-Exemple provider:
+Example provider:
 
 ```php
-use SitemapGenerator\Element\Url;
+use SitemapGenerator\Entity\Child\Url;
 use SitemapGenerator\Provider\ProviderInterface;
 use SitemapGenerator\Sitemap\Sitemap;
 
-class DummyProvider implements ProviderInterface
+final class DummyProvider implements ProviderInterface
 {
     public function populate(Sitemap $sitemap)
     {
         $url = new Url();
-        $url->setLoc('http://www.google.fr');
-        $url->setChangefreq(Url::CHANGEFREQ_NEVER);
-        $url->setLastModified('2012-12-19 02:28');
-        $sitemap->add($url);
+        $url->setLocation('http://www.google.fr');
+        $url->setChangeFrequency(Url::CHANGEFREQ_NEVER);
+        $url->setLastModified(new \DateTimeImmutable('2012-12-19 02:28'));
+        $sitemap->generate($url);
     }
 }
 ```
-
-All the providers implement the `ProviderInterface`, which define the
-`populate()` method.
 
 **Note**: so they can be automatically used by the sitemap, providers have to be
 described in the DIC with the `sitemap.provider` tag:
@@ -43,7 +40,7 @@ services:
     sitemap_dummy_provider:
         class: Camelot\Sitemap\Provider\DummyProvider
         tags:
-            -  { name: sitemap.provider }
+            -  { name: camelot.sitemap.provider }
 ```
 
 All the services tagged as `sitemap.provider` will be used to generate the
@@ -62,8 +59,8 @@ parameters:
   doctrine_providers_options:
     entity:         AcmeDemoBundle:News
     # /news/{id}
-    loc:            {route: news_show, params: {id: slug}}
-    query_method:   findValidQuery
+    loc:            { route: news_show, params: { id: slug } }
+    method:         findValidQuery
     # the following parameters are optionnal
     lastmod:        updatedAt
     changefreq:     daily
@@ -73,7 +70,7 @@ services:
     Camelot\Sitemap\Provider\DoctrineProvider:
         arguments:  [ @doctrine.orm.entity_manager, @router, %doctrine_providers_options% ]
         tags:
-            -  { name: sitemap.provider }
+            -  { name: camelot.sitemap.provider }
 ```
 
 

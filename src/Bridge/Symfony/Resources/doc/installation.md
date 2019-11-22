@@ -9,8 +9,8 @@
 Register the `CamelotSitemapBundle`:
 
 ```php,no_execute
-// app/AppKernel.php
-class AppKernel extends Kernel
+// src/Kernel.php
+final class AppKernel extends Kernel
 {
     public function registerBundles()
     {
@@ -30,15 +30,13 @@ The following options are available in the `app/config/config.yml` file:
 
 ```yaml
 camelot_sitemap:
-    base_host:         http://www.foo.com
-    base_host_sitemap: http://www.foo.com
-    limit:             50000
+    host:  http://www.foo.com
+    limit: 50000
 ```
 
 **Note:**
 
-> The `base_host` will be prepended to relative urls added to the sitemap.
-> The `base_host_sitemap` will be prepended to the sitemap filename (used for sitemap index)
+> The `host` will be prepended to the sitemap filename (used for sitemap index)
 > The `limit` is the number of url allowed in the same sitemap, if defined it will create a sitemap index
 
 ### Routing
