@@ -1,30 +1,46 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Camelot\Sitemap\Tests\Command;
 
-use Camelot\Sitemap\Command\SitemapGenerateCommand;
-use Camelot\Sitemap\Dumper\Memory;
-use Camelot\Sitemap\Generator\TextGenerator;
-use Camelot\Sitemap\Sitemap;
+use Camelot\Sitemap\Tests\FunctionalTestTrait;
+use Camelot\Sitemap\Tests\TestCaseFilesystem;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Filesystem\Filesystem;
 
-class SitemapGenerateCommandTest extends WebTestCase
+/**
+ * @covers \Camelot\Sitemap\Command\SitemapGenerateCommand
+ * @group functional
+ *
+ * @internal
+ */
+final class SitemapGenerateCommandTest extends KernelTestCase
 {
-    public function testSitemapNbUrls(): void
-    {
-        $kernel = self::createKernel();
-        $kernel->boot();
+    use FunctionalTestTrait;
 
-        $application = new Application($kernel);
-        $application->add(new SitemapGenerateCommand(new Sitemap(new Memory(), new TextGenerator())));
+    public static function setUpBeforeClass(): void
+    {
+        (new Filesystem())->remove(TestCaseFilesystem::public('sitemap.xml'));
+    }
+
+    protected function setUp(): void
+    {
+        $this->setUpDb();
+    }
+
+    public function testExecute(): void
+    {
+        self::bootKernel();
+        $application = new Application(self::$kernel);
 
         $command = $application->find('sitemap:generate');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('/Generating the sitemap/', $commandTester->getDisplay());
-        $this->assertRegExp('/Done/', $commandTester->getDisplay());
+        static::assertRegExp('/Generating Sitemap/', $commandTester->getDisplay());
+        static::assertRegExp('/Done/', $commandTester->getDisplay());
     }
 }
