@@ -1,6 +1,6 @@
 <?php
 
-namespace Camelot\Sitemap\Tests\Bridge\Symfony\Fixtures\Provider;
+namespace Camelot\Sitemap\Tests\Fixtures\Provider;
 
 use Camelot\Sitemap\Element\Child\ChangeFrequency;
 use Camelot\Sitemap\Element\Child\Url;
@@ -9,7 +9,7 @@ use Camelot\Sitemap\Sitemap;
 use DateTimeImmutable;
 use IteratorAggregate;
 
-class TestProvider implements IteratorAggregate
+class ControllerTestProvider implements IteratorAggregate
 {
     public function getIterator()
     {

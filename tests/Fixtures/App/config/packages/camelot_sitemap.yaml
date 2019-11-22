@@ -1,0 +1,33 @@
+camelot_sitemap:
+    host: sitemap.camelot.test
+    file: sitemap.xml
+    format: xml
+    indexed: false
+    compress: false
+    providers:
+
+        data_file:
+            files:
+                - file: '%kernel.project_dir%/config/sitemap/sitemap.yaml'
+                  changefreq: always
+                  lastmod: ~
+                  priority: 0.9
+#                - '%kernel.project_dir%/config/sitemap/sitemap.txt'
+
+        doctrine:
+            queries:
+                - entity: Camelot\Sitemap\Tests\Fixtures\Element\TinyChef
+                  properties:
+                      changefreq: meta.changeFrequency
+                      lastmod: bigCookbook.updated
+                      priority: meta.priority
+                      route_name: meta.routeName
+                      route_params: { id: name }
+                  route: { name: tiny_chef }
+
+        symfony:
+            routes:
+                - route: { name: 'test', params: [] }
+                  changefreq: never
+                  lastmod: ~
+                  priority: 0.5

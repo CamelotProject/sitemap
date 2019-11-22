@@ -1,0 +1,22 @@
+parameters:
+    router.request_context.host: sitemap.camelot.test
+    router.request_context.scheme: https
+    asset.request_context.secure: true
+
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    Camelot\Sitemap\Tests\Fixtures\Provider\FunctionalTestProvider:
+        tags:
+            -  { name: camelot.sitemap.provider }
+
+    Camelot\Sitemap\Tests\Fixtures\Doctrine\:
+        resource: '../../Doctrine'
+        tags: [ 'doctrine.fixture.orm' ]
+
+    Camelot\Sitemap\Tests\Fixtures\Repository\:
+        resource: '../../Repository'

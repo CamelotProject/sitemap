@@ -1,0 +1,10 @@
+camelot_sitemap:
+    resource: '@CamelotSitemapBundle/Resources/config/routing.xml'
+
+test:
+    path: /test
+    controller: Camelot\Sitemap\Controller\SitemapController
+
+tiny_chef:
+    path: /tiny-chefs/{id}
+    controller: Camelot\Sitemap\Controller\SitemapController

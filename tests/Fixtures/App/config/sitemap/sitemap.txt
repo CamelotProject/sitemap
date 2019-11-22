@@ -1,0 +1,3 @@
+https://sitemap.camelot.test/path/from-txt-1
+
+https://sitemap.camelot.test/path/from-txt-2
