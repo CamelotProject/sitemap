@@ -1,13 +1,13 @@
 <?php
 
-namespace Camelot\Sitemap\Bridge\Symfony\Command;
+namespace Camelot\Sitemap\Command;
 
 use Camelot\Sitemap\Sitemap;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateSitemapCommand extends Command
+class SitemapGenerateCommand extends Command
 {
     protected static $defaultName = 'sitemap:generate';
 
