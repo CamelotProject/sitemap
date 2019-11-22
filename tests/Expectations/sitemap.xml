@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    <url>
+        <loc>http://sitemap.test/articles</loc>
+        <lastmod>2012-12-19T02:28:00+00:00</lastmod>
+        <changefreq>never</changefreq>
+        <xhtml:link rel="alternate" href="http://nl.sitemap.test/articles" hreflang="nl-nl"/>
+    </url>
+    <url>
+        <loc>http://github.com</loc>
+        <changefreq>always</changefreq>
+        <priority>0.2</priority>
+    </url>
+    <url>
+        <loc>https://sitemap.test/uri/one</loc>
+        <lastmod>2012-06-01T00:00:00+00:00</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.5</priority>
+        <video:video>
+            <video:thumbnail_loc>https://video.test/thumbnail.png</video:thumbnail_loc>
+            <video:title>My video</video:title>
+            <video:description>A video we made</video:description>
+            <video:content_loc>https://video.test/vid.mp4</video:content_loc>
+            <video:player_loc>http://sitemap.test/player.js</video:player_loc>
+            <video:duration>69</video:duration>
+            <video:expiration_date>2020-01-01T00:00:00+00:00</video:expiration_date>
+            <video:rating>4.2</video:rating>
+            <video:content_segment_loc duration="60">https://sitemap.test/video-1.ogg</video:content_segment_loc>
+            <video:content_segment_loc duration="45">https://sitemap.test/video-2.ogg</video:content_segment_loc>
+            <video:view_count>9001</video:view_count>
+            <video:publication_date>2001-01-01T00:00:00+00:00</video:publication_date>
+            <video:tag>kittens pandas alpacas</video:tag>
+            <video:category>Fun stuff</video:category>
+            <video:family_friendly>no</video:family_friendly>
+            <video:restriction relationship="allow">NL AU</video:restriction>
+            <video:gallery_loc title="Our video gallery">http://sitemap.test/video-gallery</video:gallery_loc>
+            <video:price currency="USD" type="purchase" resolution="hd">24.96</video:price>
+            <video:price currency="EUR" type="rent" resolution="sd">42.69</video:price>
+            <video:requires_subscription>yes</video:requires_subscription>
+            <video:uploader info="https://john.test">John Doe</video:uploader>
+            <video:tvshow>
+                <video:show_title>My TV Show</video:show_title>
+                <video:video_type>full</video:video_type>
+                <video:episode_title>Season 2, Episode 1</video:episode_title>
+                <video:season_number>2</video:season_number>
+                <video:episode_number>1</video:episode_number>
+                <video:premier_date>2020-01-01T00:00:00+00:00</video:premier_date>
+            </video:tvshow>
+            <video:platform relationship="allow">tv web</video:platform>
+            <video:live>no</video:live>
+            <video:id type="tms:program">0d2c6e71-9ac3-4ef4-a6c2-899562e19ddc</video:id>
+            <video:id type="tms:series">45062486-c8f7-4596-9530-e78db82c3a36</video:id>
+        </video:video>
+    </url>
+    <url>
+        <loc>https://sitemap.test/uri/two</loc>
+        <lastmod>1999-12-31T00:00:00+00:00</lastmod>
+        <xhtml:link rel="alternate" href="https://nl.sitemap.test" hreflang="nl"/>
+        <image:image>
+            <image:loc>https://sitemap.test/image.png</image:loc>
+            <image:caption>Something, something, caption sauce</image:caption>
+            <image:geo_location>Borkeld, Overijssel</image:geo_location>
+            <image:title>Images everywhere</image:title>
+            <image:license>MIT</image:license>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://sitemap.test/uri/three</loc>
+    </url>
+    <url>
+        <loc>https://sitemap.test/uri/four</loc>
+    </url>
+    <url>
+        <loc>https://sitemap.test/uri/five</loc>
+    </url>
+</urlset>

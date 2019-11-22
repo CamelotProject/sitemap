@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+		xmlns:xhtml="http://www.w3.org/1999/xhtml">
+	<url>
+		<loc>https://www.sitemaps.org/protocol.html</loc>
+		<lastmod>2016-11-21</lastmod>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/da/protocol.html" hreflang="da"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/de/protocol.html" hreflang="de"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/en_GB/protocol.html" hreflang="en-gb"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/es/protocol.html" hreflang="es"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/fi/protocol.html" hreflang="fi"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/fr/protocol.html" hreflang="fr"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/it/protocol.html" hreflang="it"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/ja/protocol.html" hreflang="ja"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/ko/protocol.html" hreflang="ko"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/nl/protocol.html" hreflang="nl"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/no/protocol.html" hreflang="no"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/pt/protocol.html" hreflang="pt"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/pt_BR/protocol.html" hreflang="pt-br"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/ro/protocol.html" hreflang="ro"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/ru/protocol.html" hreflang="ru"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/sv/protocol.html" hreflang="sv"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/tr/protocol.html" hreflang="tr"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/zh_CN/protocol.html" hreflang="zh-cn"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/zh_HK/protocol.html" hreflang="zh-hk"/>
+		<xhtml:link rel="alternate" href="https://www.sitemaps.org/zh_TW/protocol.html" hreflang="zh-tw"/>
+	</url>
+</urlset>
