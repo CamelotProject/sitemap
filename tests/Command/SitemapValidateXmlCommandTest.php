@@ -43,7 +43,7 @@ final class SitemapValidateXmlCommandTest extends KernelTestCase
             'file' => $filePath,
         ]);
 
-        static::assertRegExp($expected, $commandTester->getDisplay());
+        static::assertMatchesRegularExpression($expected, $commandTester->getDisplay());
     }
 
     public function testExecuteInvalidPath(): void

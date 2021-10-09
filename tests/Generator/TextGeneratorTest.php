@@ -49,7 +49,7 @@ final class TextGeneratorTest extends TestCase
         $generator->generate($index, $target);
         $result = $target->read();
 
-        static::assertRegExp('#^https://sitemap.test/sitemap-1.xml\n#m', $result);
+        static::assertMatchesRegularExpression('#^https://sitemap.test/sitemap-1.xml\n#m', $result);
     }
 
     public function testGenerateWithUnknownParentInterfaceClass(): void

@@ -40,7 +40,7 @@ final class SitemapGenerateCommandTest extends KernelTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        static::assertRegExp('/Generating Sitemap/', $commandTester->getDisplay());
-        static::assertRegExp('/Done/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/Generating Sitemap/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/Done/', $commandTester->getDisplay());
     }
 }
