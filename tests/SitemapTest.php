@@ -11,6 +11,7 @@ use Camelot\Sitemap\Target\StreamFactory;
 use Camelot\Sitemap\Tests\Fixtures\Provider\FunctionalTestProvider;
 use Camelot\Sitemap\Validation\XmlSchemaValidator;
 use PHPUnit\Framework\TestCase;
+use function date_default_timezone_set;
 use function file_get_contents;
 use function rtrim;
 use function substr;
@@ -31,6 +32,7 @@ final class SitemapTest extends TestCase
     protected function setUp(): void
     {
         TestCaseFilesystem::cleanup();
+        date_default_timezone_set('UTC');
     }
 
     protected function tearDown(): void

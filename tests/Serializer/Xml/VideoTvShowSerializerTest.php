@@ -9,6 +9,7 @@ use Camelot\Sitemap\Serializer\Xml\VideoTvShowSerializer;
 use Camelot\Sitemap\Sitemap;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use function date_default_timezone_set;
 
 /**
  * @covers \Camelot\Sitemap\Serializer\Xml\VideoTvShowSerializer
@@ -18,6 +19,11 @@ use PHPUnit\Framework\TestCase;
 final class VideoTvShowSerializerTest extends TestCase
 {
     use XmlWriterMockTrait;
+
+    protected function setUp(): void
+    {
+        date_default_timezone_set('UTC');
+    }
 
     public function testSerialize(): void
     {

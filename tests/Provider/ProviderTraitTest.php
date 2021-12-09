@@ -8,7 +8,9 @@ use Camelot\Sitemap\DefaultValues;
 use Camelot\Sitemap\Provider\ProviderTrait;
 use Camelot\Sitemap\Sitemap;
 use DateTimeImmutable;
+use DateTimeZone;
 use PHPUnit\Framework\TestCase;
+use function date_default_timezone_set;
 use function iter\toArray;
 
 /**
@@ -19,6 +21,11 @@ use function iter\toArray;
 final class ProviderTraitTest extends TestCase
 {
     use ProviderAssertTrait;
+
+    protected function setUp(): void
+    {
+        date_default_timezone_set('UTC');
+    }
 
     public function providerOptions(): iterable
     {
@@ -55,7 +62,7 @@ final class ProviderTraitTest extends TestCase
                     'route' => 'https://sitemap.camelot.test/url',
                 ],
             ],
-            DefaultValues::create(0.9, Sitemap::CHANGE_FREQ_YEARLY, new DateTimeImmutable('2018-07-06')),
+            DefaultValues::create(0.9, Sitemap::CHANGE_FREQ_YEARLY, new DateTimeImmutable('2018-07-06', new DateTimeZone('UTC'))),
         ];
 
         yield 'All parameters' => [
@@ -75,7 +82,7 @@ final class ProviderTraitTest extends TestCase
                     'priority' => 0.3,
                 ],
             ],
-            DefaultValues::create(0.9, Sitemap::CHANGE_FREQ_YEARLY, new DateTimeImmutable('2018-07-06')),
+            DefaultValues::create(0.9, Sitemap::CHANGE_FREQ_YEARLY, new DateTimeImmutable('2018-07-06', new DateTimeZone('UTC'))),
         ];
     }
 
@@ -94,7 +101,7 @@ final class ProviderTraitTest extends TestCase
         }
     }
 
-    private function getProviderTrait(array $options, ?DefaultValues $defaultValues)
+    private function getProviderTrait(array $options, ?DefaultValues $defaultValues): object
     {
         return new class($options, $defaultValues) { use ProviderTrait; };
     }

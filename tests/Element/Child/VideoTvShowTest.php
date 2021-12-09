@@ -8,6 +8,7 @@ use Camelot\Sitemap\Element\Child\VideoTvShow;
 use Camelot\Sitemap\Exception\DomainException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use function date_default_timezone_set;
 
 /**
  * @covers \Camelot\Sitemap\Element\Child\VideoTvShow
@@ -102,6 +103,8 @@ final class VideoTvShowTest extends TestCase
 
     public function testGetPremierDate(): void
     {
+        date_default_timezone_set('UTC');
+
         static::assertSame('2020-01-01T00:00:00+00:00', $this->getVideoTvShow()->getPremierDate());
     }
 

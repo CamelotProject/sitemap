@@ -8,6 +8,7 @@ use Camelot\Sitemap\DefaultValues;
 use Camelot\Sitemap\Provider\SymfonyRouteProvider;
 use Camelot\Sitemap\Sitemap;
 use DateTimeImmutable;
+use DateTimeZone;
 use DomainException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -15,11 +16,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use function date_default_timezone_set;
 use function iter\toArray;
 
 /**
  * @covers \Camelot\Sitemap\Provider\SymfonyRouteProvider
- * @covers \Camelot\Sitemap\Provider\SymfonyRouteProviderTrait
+ * @covers \Camelot\Sitemap\Provider\SymfonyRouteTrait
  *
  * @internal
  */
@@ -32,6 +34,8 @@ final class SymfonyRouteProviderTest extends TestCase
 
     protected function setUp(): void
     {
+        date_default_timezone_set('UTC');
+
         $routes = new RouteCollection();
         $route = new Route('/tests/{id}');
         $routes->add('tests', $route);
@@ -73,7 +77,7 @@ final class SymfonyRouteProviderTest extends TestCase
                     'route' => ['name' => 'tests', 'params' => ['id' => 'snail']],
                 ],
             ],
-            DefaultValues::create(0.9, Sitemap::CHANGE_FREQ_YEARLY, new DateTimeImmutable('2018-07-06')),
+            DefaultValues::create(0.9, Sitemap::CHANGE_FREQ_YEARLY, new DateTimeImmutable('2018-07-06', new DateTimeZone('UTC'))),
         ];
 
         yield 'All parameters' => [

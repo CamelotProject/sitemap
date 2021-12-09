@@ -8,8 +8,10 @@ use Camelot\Sitemap\DefaultValues;
 use Camelot\Sitemap\Provider\DataFileProvider;
 use Camelot\Sitemap\Sitemap;
 use DateTimeImmutable;
+use DateTimeZone;
 use DomainException;
 use PHPUnit\Framework\TestCase;
+use function date_default_timezone_set;
 use function iter\toArray;
 
 /**
@@ -20,6 +22,11 @@ use function iter\toArray;
 final class DataFileProviderTest extends TestCase
 {
     use ProviderAssertTrait;
+
+    protected function setUp(): void
+    {
+        date_default_timezone_set('UTC');
+    }
 
     public function providerOptions(): iterable
     {
@@ -67,7 +74,7 @@ final class DataFileProviderTest extends TestCase
             [
                 'file' => "{$dir}/sitemap.txt",
             ],
-            DefaultValues::create(0.9, Sitemap::CHANGE_FREQ_YEARLY, new DateTimeImmutable('2018-07-06')),
+            DefaultValues::create(0.9, Sitemap::CHANGE_FREQ_YEARLY, new DateTimeImmutable('2018-07-06', new DateTimeZone('UTC'))),
         ];
 
         yield 'All parameters' => [
@@ -85,7 +92,7 @@ final class DataFileProviderTest extends TestCase
                 'lastmod' => '1999-12-31T00:00:00+00:00',
                 'priority' => 0.3,
             ],
-            DefaultValues::create(0.9, Sitemap::CHANGE_FREQ_YEARLY, new DateTimeImmutable('2018-07-06')),
+            DefaultValues::create(0.9, Sitemap::CHANGE_FREQ_YEARLY, new DateTimeImmutable('2018-07-06', new DateTimeZone('UTC'))),
         ];
     }
 

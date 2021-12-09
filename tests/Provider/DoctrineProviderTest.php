@@ -10,6 +10,7 @@ use Camelot\Sitemap\Sitemap;
 use Camelot\Sitemap\Tests\Fixtures\Element\TinyChef;
 use Camelot\Sitemap\Tests\FunctionalTestTrait;
 use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -18,6 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use function date_default_timezone_set;
 use function iter\toArray;
 
 /**
@@ -36,7 +38,7 @@ use function iter\toArray;
  *   - 1,'hourly',0.8,'tiny-chef','name'
  *
  * @covers \Camelot\Sitemap\Provider\DoctrineProvider
- * @covers \Camelot\Sitemap\Provider\DoctrineProviderTrait
+ * @covers \Camelot\Sitemap\Provider\DoctrineTrait
  * @group functional
  *
  * @see \Camelot\Sitemap\Tests\Fixtures\Doctrine\DoctrineProviderFixtures
@@ -54,6 +56,8 @@ final class DoctrineProviderTest extends KernelTestCase
 
     protected function setUp(): void
     {
+        date_default_timezone_set('UTC');
+
         static::bootKernel();
         $this->setUpDb();
         $this->em = self::$container->get('doctrine')->getManager();
@@ -146,7 +150,7 @@ final class DoctrineProviderTest extends KernelTestCase
                     'route_params' => ['id' => 'name'],
                 ],
             ],
-            DefaultValues::create(0.2, Sitemap::CHANGE_FREQ_WEEKLY, new DateTimeImmutable('2019-12-31')),
+            DefaultValues::create(0.2, Sitemap::CHANGE_FREQ_WEEKLY, new DateTimeImmutable('2019-12-31', new DateTimeZone('UTC'))),
         ];
     }
 
