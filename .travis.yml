@@ -23,5 +23,4 @@ before_script:
     - composer install $COMPOSER_OPTS
 
 script:
-    - make tests
-    - make rusty
+    - php vendor/bin/phpunit
