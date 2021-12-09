@@ -8,10 +8,11 @@ use Camelot\Sitemap\Element\Child\Video;
 use Camelot\Sitemap\Sitemap;
 use DateTimeImmutable;
 use IteratorAggregate;
+use Traversable;
 
 class ControllerTestProvider implements IteratorAggregate
 {
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         $url = new Url('http://www.google.fr');
         $url->setChangeFrequency(new ChangeFrequency(Sitemap::CHANGE_FREQ_NEVER));

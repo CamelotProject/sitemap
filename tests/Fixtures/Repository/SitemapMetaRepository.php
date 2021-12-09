@@ -6,7 +6,7 @@ namespace Camelot\Sitemap\Tests\Fixtures\Repository;
 
 use Camelot\Sitemap\Tests\Fixtures\Element\SitemapMeta;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method null|SitemapMeta find($id, $lockMode = null, $lockVersion = null)

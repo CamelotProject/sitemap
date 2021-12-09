@@ -60,7 +60,7 @@ final class DoctrineProviderTest extends KernelTestCase
 
         static::bootKernel();
         $this->setUpDb();
-        $this->em = self::$container->get('doctrine')->getManager();
+        $this->em = self::getContainer()->get('doctrine')->getManager();
 
         $routes = new RouteCollection();
         $routes->add('tiny_chef', new Route('/tiny-chefs/{id}'));

@@ -6,8 +6,8 @@ namespace Camelot\Sitemap\Tests\Fixtures\Repository;
 
 use Camelot\Sitemap\Tests\Fixtures\Element\BigCookbook;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method null|BigCookbook find($id, $lockMode = null, $lockVersion = null)

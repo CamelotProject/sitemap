@@ -33,7 +33,7 @@ final class SchemaTraitTest extends TestCase
     public function testReadException(): void
     {
         $this->expectException(SchemaException::class);
-        $this->expectExceptionMessageMatches('/Filename cannot be empty/');
+        $this->expectExceptionMessageMatches('/(Filename|Path) cannot be empty/');
 
         $xsd = $this->getSchemaInterface();
         $xsd::$filePath = '';
@@ -47,6 +47,11 @@ final class SchemaTraitTest extends TestCase
             use SchemaTrait;
 
             public static string $filePath = __FILE__;
+
+            protected static function getPath(): string
+            {
+                return self::$filePath;
+            }
         };
     }
 }

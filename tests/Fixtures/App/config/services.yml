@@ -1,8 +1,0 @@
-services:
-    Camelot\Sitemap\Tests\Bridge\Symfony\Fixtures\Provider\TestProvider:
-        tags:
-            -  { name: sitemap.provider }
-
-    Camelot\Sitemap\Dumper\Memory:
-
-    Camelot\Sitemap\Dumper\FileDumperInterface: '@Camelot\Sitemap\Dumper\Memory'
