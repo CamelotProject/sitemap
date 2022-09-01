@@ -6,16 +6,19 @@ namespace Camelot\Sitemap\Command;
 
 use Camelot\Sitemap\Config;
 use Camelot\Sitemap\Sitemap;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Routing\RouterInterface;
 
+#[AsCommand(
+    name: 'sitemap:generate',
+    description: 'Generate the sitemap'
+)]
 class SitemapGenerateCommand extends Command
 {
-    protected static $defaultName = 'sitemap:generate';
-
     private iterable $providers;
     private Sitemap $sitemap;
     private Config $config;
@@ -29,14 +32,6 @@ class SitemapGenerateCommand extends Command
         $this->sitemap = $sitemap;
         $this->config = $config;
         $this->router = $router;
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->setDescription('Generate the sitemap')
-            ->setName('sitemap:generate')
-        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

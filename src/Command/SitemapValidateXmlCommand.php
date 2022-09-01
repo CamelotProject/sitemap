@@ -7,6 +7,7 @@ namespace Camelot\Sitemap\Command;
 use Camelot\Sitemap\Exception\ValidationException;
 use Camelot\Sitemap\Validation\XmlSchemaValidator;
 use RuntimeException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,14 +16,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use function realpath;
 use function sprintf;
 
+#[AsCommand(
+    name: 'sitemap:validate:xml',
+    description: 'Validate a sitemap file'
+)]
 final class SitemapValidateXmlCommand extends Command
 {
-    protected static $defaultName = 'sitemap:validate:xml';
-
     protected function configure(): void
     {
         $this
-            ->setDescription('Validate a sitemap file')
             ->addArgument('file', InputArgument::REQUIRED, 'Sitemap XML file')
         ;
     }

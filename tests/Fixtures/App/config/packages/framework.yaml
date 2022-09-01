@@ -1,5 +1,6 @@
 framework:
     secret: '$ecr3t$quirr33l'
+    http_method_override: false
 
     php_errors:
         log: true

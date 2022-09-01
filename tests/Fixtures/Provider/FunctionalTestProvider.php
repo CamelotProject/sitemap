@@ -21,13 +21,14 @@ use Camelot\Sitemap\Element\Child\VideoUploader;
 use Camelot\Sitemap\Sitemap;
 use DateTimeImmutable;
 use IteratorAggregate;
+use Traversable;
 
 /**
  * @internal
  */
 final class FunctionalTestProvider implements IteratorAggregate
 {
-    public function getIterator(): iterable
+    public function getIterator(): Traversable
     {
         yield $this->providerOne();
         yield $this->providerTwo();
