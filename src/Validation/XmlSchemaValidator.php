@@ -13,10 +13,10 @@ use Camelot\Sitemap\Schema\Xhtml1Xsd;
 use Camelot\Sitemap\Target\Dsn;
 use Camelot\Sitemap\Target\Stream;
 use DOMDocument;
+use Eclipxe\XmlSchemaValidator\Exceptions\XmlSchemaValidatorException;
+use Eclipxe\XmlSchemaValidator\Schemas;
+use Eclipxe\XmlSchemaValidator\SchemaValidator;
 use Throwable;
-use XmlSchemaValidator\Schemas;
-use XmlSchemaValidator\SchemaValidator;
-use XmlSchemaValidator\SchemaValidatorException;
 use function pathinfo;
 use function sprintf;
 use const PATHINFO_EXTENSION;
@@ -60,7 +60,7 @@ final class XmlSchemaValidator
 
         try {
             $validator->validateWithSchemas($schemas);
-        } catch (SchemaValidatorException $e) {
+        } catch (XmlSchemaValidatorException $e) {
             throw new ValidationException(self::unwindExceptions($e), (int) $e->getCode(), $e);
         }
 
@@ -89,7 +89,7 @@ final class XmlSchemaValidator
         $schemas->create('http://www.sitemaps.org/schemas/sitemap/0.9', SitemapIndexXsd::path());
     }
 
-    private static function unwindExceptions(SchemaValidatorException $e): string
+    private static function unwindExceptions(XmlSchemaValidatorException $e): string
     {
         $message = $e->getMessage();
         $previous = $e->getPrevious();

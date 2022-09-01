@@ -22,9 +22,9 @@
         "ext-dom": "*",
         "ext-libxml": "*",
         "camelot/thrower": "^1.0",
-        "eclipxe/xmlschemavalidator": "^2.1",
+        "eclipxe/xmlschemavalidator": "^3.0",
         "nikic/iter": "^2.0",
-        "sabre/xml": "^2.1",
+        "sabre/xml": "^3.0",
         "symfony/property-access": "^5.4 || ^6.0"
     },
     "require-dev": {
