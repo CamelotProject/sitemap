@@ -6,10 +6,8 @@ namespace Camelot\Sitemap\Util;
 
 use Camelot\Sitemap\Exception\DomainException;
 use function implode;
-use function in_array;
 use function preg_match;
 use function sprintf;
-use function strlen;
 
 final class Assert
 {
@@ -18,7 +16,7 @@ final class Assert
 
     public static function stringLength(string $value, int $min, int $max, string $parameterName): void
     {
-        $length = strlen($value);
+        $length = \strlen($value);
         if ($length < $min || $length > $max) {
             throw new DomainException(sprintf('Parameter value length was %s, but must be between %s and %s characters. Parameter: "%s" Value: %s', $length, $min, $max, $parameterName, $value));
         }
@@ -26,7 +24,7 @@ final class Assert
 
     public static function oneOf(string $value, array $available, string $parameterName): void
     {
-        if (!in_array($value, $available, true)) {
+        if (!\in_array($value, $available, true)) {
             throw new DomainException(sprintf('Parameter "%s" value is invalid, %s given. Valid values are: %s', $parameterName, $value, implode(', ', $available)));
         }
     }

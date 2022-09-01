@@ -46,7 +46,7 @@ final class SitemapValidateXmlCommand extends Command
             return 1;
         }
 
-        $io->success("XML file $filePath is valid");
+        $io->success("XML file {$filePath} is valid");
 
         return 0;
     }

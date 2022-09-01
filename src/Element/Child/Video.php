@@ -7,7 +7,6 @@ namespace Camelot\Sitemap\Element\Child;
 use Camelot\Sitemap\Exception\DomainException;
 use Camelot\Sitemap\Util\Assert;
 use DateTimeInterface;
-use function count;
 use const PHP_INT_MAX;
 
 /**
@@ -286,7 +285,7 @@ final class Video implements UrlExtensionInterface
 
     public function setTags(array $tags): self
     {
-        if (count($tags) > 32) {
+        if (\count($tags) > 32) {
             throw new DomainException('A maximum of 32 tags is allowed.');
         }
 

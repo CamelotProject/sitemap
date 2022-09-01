@@ -7,7 +7,6 @@ namespace Camelot\Sitemap\Element\Child;
 use Camelot\Sitemap\Exception\DomainException;
 use Camelot\Sitemap\Sitemap;
 use function implode;
-use function in_array;
 use function sprintf;
 
 final class ChangeFrequency
@@ -22,7 +21,7 @@ final class ChangeFrequency
             Sitemap::CHANGE_FREQ_WEEKLY, Sitemap::CHANGE_FREQ_MONTHLY,
             Sitemap::CHANGE_FREQ_YEARLY,
         ];
-        if ($changefreq && !in_array($changefreq, $valid, true)) {
+        if ($changefreq && !\in_array($changefreq, $valid, true)) {
             throw new DomainException(sprintf('The changefreq must be one of %s, %s given.', implode(', ', $valid), $changefreq));
         }
         $this->value = $changefreq;

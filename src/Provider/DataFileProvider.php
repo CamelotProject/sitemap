@@ -10,7 +10,6 @@ use SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 use Traversable;
 use function array_filter;
-use function in_array;
 use function sprintf;
 use function var_export;
 use const PHP_EOL;
@@ -35,10 +34,10 @@ final class DataFileProvider implements IteratorAggregate
     private function getFileContents(string $fileName): array
     {
         $fileExtension = (new SplFileInfo($fileName))->getExtension();
-        if (in_array($fileExtension, ['yaml', 'yml'], true)) {
+        if (\in_array($fileExtension, ['yaml', 'yml'], true)) {
             return $this->processYamlFile($fileName);
         }
-        if (in_array($fileExtension, ['txt', 'conf'], true)) {
+        if (\in_array($fileExtension, ['txt', 'conf'], true)) {
             return $this->processTextFile($fileName);
         }
 

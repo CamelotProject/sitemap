@@ -42,7 +42,7 @@ final class Config
 
     public function getFileName(string $suffix = null): string
     {
-        return sprintf($this->fileName, $suffix ? "-$suffix" : '');
+        return sprintf($this->fileName, $suffix ? "-{$suffix}" : '');
     }
 
     public function getFilePath(string $suffix = null): string
@@ -90,6 +90,6 @@ final class Config
             $ext .= '.gz';
         }
 
-        return "$baseName%s.$ext";
+        return "{$baseName}%s.{$ext}";
     }
 }

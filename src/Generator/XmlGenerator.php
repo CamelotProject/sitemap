@@ -27,7 +27,6 @@ use Camelot\Sitemap\Serializer\Xml\VideoUploaderSerializer;
 use Camelot\Sitemap\Sitemap;
 use Camelot\Sitemap\Target\TargetInterface;
 use Sabre\Xml\Writer;
-use function get_class;
 use function sprintf;
 
 final class XmlGenerator implements GeneratorInterface
@@ -45,7 +44,7 @@ final class XmlGenerator implements GeneratorInterface
             $rootElementName = Sitemap::XML_CLARK_NS . 'sitemapindex';
             $xmlNs = $this->configureSitemapIndex();
         } else {
-            throw new GeneratorException(sprintf('Unknown %s object, %s & %s supported, %s given.', RootElementInterface::class, UrlSet::class, SitemapIndex::class, get_class($data)));
+            throw new GeneratorException(sprintf('Unknown %s object, %s & %s supported, %s given.', RootElementInterface::class, UrlSet::class, SitemapIndex::class, \get_class($data)));
         }
         $output = $this->doGenerate($rootElementName, $data, $xmlNs);
         $target->write($output);

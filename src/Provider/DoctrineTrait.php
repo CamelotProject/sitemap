@@ -13,7 +13,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Traversable;
-use function get_class;
 use function sprintf;
 
 /**
@@ -100,7 +99,7 @@ trait DoctrineTrait
         $query = $method ? $repo->{$method}() : $repo->createQueryBuilder('o')->getQuery();
 
         if (!$query instanceof Query) {
-            throw new RuntimeException(sprintf('Expected instance of Query, got %s (see method %s:%s)', get_class($query), $this->options['entity'], $method)); // @codeCoverageIgnore
+            throw new RuntimeException(sprintf('Expected instance of Query, got %s (see method %s:%s)', \get_class($query), $this->options['entity'], $method)); // @codeCoverageIgnore
         }
 
         return $query;

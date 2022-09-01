@@ -6,10 +6,7 @@ namespace Camelot\Sitemap\Validation;
 
 use Camelot\Sitemap\Element\Child\ChildInterface;
 use DomainException;
-use function get_class;
-use function gettype;
 use function is_iterable;
-use function is_object;
 use function sprintf;
 use function var_export;
 use const PHP_EOL;
@@ -37,7 +34,7 @@ final class ProviderValidator
                 'Provider %s does not implement %s, %s given.%s',
                 (string) $id,
                 ChildInterface::class,
-                is_object($url) ? get_class($url) : gettype($url),
+                \is_object($url) ? \get_class($url) : \gettype($url),
                 $dump
             );
 
